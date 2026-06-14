@@ -482,6 +482,27 @@
     margin: 0 auto;
   }
 
+  .other-input-wrap {
+    display: none;
+    margin-top: 6px;
+    padding: 0 2px;
+  }
+  .other-input-wrap.show { display: block; }
+  .other-input {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--accent-border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  .other-input:focus { border-color: var(--accent2); }
+  .other-input::placeholder { color: var(--text3); }
+
   .form-content { transition: opacity 0.3s; }
   .form-content.hidden { display: none; }
 
@@ -529,18 +550,26 @@
         <div class="info-card">
           <div class="info-card-label">포지션</div>
           <div class="options-grid" id="q-position">
-            <div class="option" onclick="selectRadio(this,'position')"><div class="option-radio"></div><div class="option-text">개발자</div></div>
-            <div class="option" onclick="selectRadio(this,'position')"><div class="option-radio"></div><div class="option-text">사업개발</div></div>
-            <div class="option" onclick="selectRadio(this,'position')"><div class="option-radio"></div><div class="option-text">창업자 / 대표</div></div>
-            <div class="option" onclick="selectRadio(this,'position')"><div class="option-radio"></div><div class="option-text">기타</div></div>
+            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',false)"><div class="option-radio"></div><div class="option-text">개발자</div></div>
+            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',false)"><div class="option-radio"></div><div class="option-text">사업개발</div></div>
+            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',false)"><div class="option-radio"></div><div class="option-text">창업자 / 대표</div></div>
+            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',true)"><div class="option-radio"></div><div class="option-text">기타</div></div>
+          </div>
+          <div class="other-input-wrap" id="position-other">
+            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="position-other-text" />
           </div>
         </div>
         <div class="info-card">
           <div class="info-card-label">회사 유형</div>
           <div class="options-grid" id="q-companyType">
-            <div class="option" onclick="selectRadio(this,'companyType')"><div class="option-radio"></div><div class="option-text">휴머노이드</div></div>
-            <div class="option" onclick="selectRadio(this,'companyType')"><div class="option-radio"></div><div class="option-text">산업용 로봇</div></div>
-            <div class="option" onclick="selectRadio(this,'companyType')"><div class="option-radio"></div><div class="option-text">기타</div></div>
+            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">휴머노이드</div></div>
+            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">협동로봇 / 로봇 암</div></div>
+            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">이동 로봇 (AMR·AGV)</div></div>
+            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">서비스 로봇</div></div>
+            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',true)"><div class="option-radio"></div><div class="option-text">기타</div></div>
+          </div>
+          <div class="other-input-wrap" id="companyType-other">
+            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="companyType-other-text" />
           </div>
         </div>
       </div>
@@ -560,7 +589,10 @@
           <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">외부 데이터셋 활용 (오픈소스 등)</div></div>
           <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">데이터 전문 업체에서 구매</div></div>
           <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">아직 데이터 수집 단계가 아니다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          <div class="option" onclick="toggleCheck(this,'q1'); toggleOther('q1-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        </div>
+        <div class="other-input-wrap" id="q1-other">
+          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q1-other-text" />
         </div>
       </div>
 
@@ -576,7 +608,10 @@
           <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">데이터 품질 (라벨링·정확도)이 낮다</div></div>
           <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">실제 작업 환경 데이터를 구하기 어렵다</div></div>
           <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">불편한 점이 없다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          <div class="option" onclick="toggleCheck(this,'q2'); toggleOther('q2-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        </div>
+        <div class="other-input-wrap" id="q2-other">
+          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q2-other-text" />
         </div>
       </div>
 
@@ -606,7 +641,10 @@
           <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">멀티뷰 RGB 영상 데이터</div></div>
           <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">실제 공장·매장 환경 데이터</div></div>
           <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">시뮬레이션 합성 데이터</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4',2); toggleOther('q4-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        </div>
+        <div class="other-input-wrap" id="q4-other">
+          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q4-other-text" />
         </div>
       </div>
 
@@ -620,7 +658,10 @@
           <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">가격</div></div>
           <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">라이선스·데이터 소유권</div></div>
           <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">납기·공급 속도</div></div>
-          <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          <div class="option" onclick="toggleCheck(this,'q5'); toggleOther('q5-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        </div>
+        <div class="other-input-wrap" id="q5-other">
+          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q5-other-text" />
         </div>
       </div>
     </div>
@@ -643,10 +684,13 @@
           <div class="q-label">Q6-1 — 추가 질문</div>
           <div class="q-text" style="font-size:14px; margin-bottom:12px;">구매 의향이 없는 이유는?</div>
           <div class="options-grid" id="q6-1">
-            <div class="option" onclick="selectRadio(this,'q6_1')"><div class="option-radio"></div><div class="option-text">자체 수집이 더 효율적이다</div></div>
-            <div class="option" onclick="selectRadio(this,'q6_1')"><div class="option-radio"></div><div class="option-text">예산이 없다</div></div>
-            <div class="option" onclick="selectRadio(this,'q6_1')"><div class="option-radio"></div><div class="option-text">외부 데이터를 신뢰하기 어렵다</div></div>
-            <div class="option" onclick="selectRadio(this,'q6_1')"><div class="option-radio"></div><div class="option-text">기타</div></div>
+            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)"><div class="option-radio"></div><div class="option-text">자체 수집이 더 효율적이다</div></div>
+            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)"><div class="option-radio"></div><div class="option-text">예산이 없다</div></div>
+            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)"><div class="option-radio"></div><div class="option-text">외부 데이터를 신뢰하기 어렵다</div></div>
+            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',true)"><div class="option-radio"></div><div class="option-text">기타</div></div>
+          </div>
+          <div class="other-input-wrap" id="q6_1-other">
+            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q6_1-other-text" />
           </div>
         </div>
       </div>
@@ -727,7 +771,8 @@
 </div>
 
 <script>
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbw7BlIfH8I4wmM50OSq0a1TSPJA84CkhFge_kUh2uXXOAeJt-CK9kUQ4chDqu4XxmY5SQ/exec";
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyR5fAlPsXQU6XBkPsNbfKS1ivDw9MEplYdKQ-zel9jQ2wqvyk8c7-gFGvw440FB9FD/exec"
+//"https://script.google.com/macros/s/AKfycbw7BlIfH8I4wmM50OSq0a1TSPJA84CkhFge_kUh2uXXOAeJt-CK9kUQ4chDqu4XxmY5SQ/exec";
 
 const radioState = {};
 const checkState = {};
@@ -758,6 +803,20 @@ function showCond(id, show) {
   const el = document.getElementById(id);
   if (show) el.classList.add('show');
   else el.classList.remove('show');
+}
+
+function toggleOther(wrapId, el) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  if (el.classList.contains('selected')) wrap.classList.add('show');
+  else wrap.classList.remove('show');
+}
+
+function showOther(wrapId, show) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  if (show) wrap.classList.add('show');
+  else wrap.classList.remove('show');
 }
 
 function countAnswered() {
@@ -832,19 +891,27 @@ async function submitForm() {
   btn.textContent = '제출 중...';
   btn.disabled = true;
 
+  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
   const payload = {
-    position:    radioState['position']    || "",
-    companyType: radioState['companyType'] || "",
-    q1:          checkState['q1']          || [],
-    q2:          checkState['q2']          || [],
-    q3:          radioState['q3']          || "",
-    q4:          checkState['q4']          || [],
-    q5:          checkState['q5']          || [],
-    q6:          radioState['q6']          || "",
-    q6_1:        radioState['q6_1']        || "",
-    q7:          radioState['q7']          || "",
-    q8:          radioState['q8']          || "",
-    q9:          document.getElementById('q9').value,
+    position:          radioState['position']    || "",
+    position_other:    g('position-other-text'),
+    companyType:       radioState['companyType'] || "",
+    companyType_other: g('companyType-other-text'),
+    q1:                checkState['q1']          || [],
+    q1_other:          g('q1-other-text'),
+    q2:                checkState['q2']          || [],
+    q2_other:          g('q2-other-text'),
+    q3:                radioState['q3']          || "",
+    q4:                checkState['q4']          || [],
+    q4_other:          g('q4-other-text'),
+    q5:                checkState['q5']          || [],
+    q5_other:          g('q5-other-text'),
+    q6:                radioState['q6']          || "",
+    q6_1:              radioState['q6_1']        || "",
+    q6_1_other:        g('q6_1-other-text'),
+    q7:                radioState['q7']          || "",
+    q8:                radioState['q8']          || "",
+    q9:                document.getElementById('q9').value,
   };
 
   try {
