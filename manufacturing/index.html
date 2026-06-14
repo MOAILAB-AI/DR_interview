@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dream Robotics: MOAI LAB — 산업군 운영자 인터뷰</title>
+<title>Dream Robotics: MOAI LAB — 현장 업무 자동화 수요 조사</title>
 <style>
   :root {
     --bg: #0e0e10;
@@ -247,24 +247,6 @@
     color: var(--accent2);
   }
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  .info-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-  }
-  .info-card-label {
-    font-size: 12px;
-    color: var(--text2);
-    margin-bottom: 8px;
-  }
-
   .text-input {
     width: 100%;
     background: var(--bg3);
@@ -285,45 +267,52 @@
   }
   .text-input::placeholder { color: var(--text3); }
 
-  .conditional {
-    background: rgba(108,99,255,0.06);
-    border: 1px dashed var(--accent-border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    margin-top: 10px;
+  .sub-group {
+    margin-bottom: 18px;
+  }
+  .sub-group:last-child {
+    margin-bottom: 0;
+  }
+  .sub-group-label {
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .options-grid.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .options-grid.inline .option {
+    flex: 1;
+    min-width: 80px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .cond-block {
     display: none;
   }
-  .conditional.show { display: block; }
-  .conditional .q-label { color: var(--accent2); opacity: 0.7; }
+  .cond-block.show {
+    display: block;
+  }
 
-  .rank-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--bg3);
+  .q8-sub {
+    margin-bottom: 16px;
+  }
+  .q8-sub:last-child { margin-bottom: 0; }
+  .q8-sub-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+  .q8-sub-hint {
+    font-size: 11px;
+    color: var(--text3);
     margin-bottom: 8px;
   }
-  .rank-num {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border-hover);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text3);
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .rank-num.r1 { background: var(--accent); border-color: var(--accent); color: white; }
-  .rank-num.r2 { background: rgba(108,99,255,0.5); border-color: var(--accent); color: white; }
-  .rank-num.r3 { background: rgba(108,99,255,0.25); border-color: var(--accent-border); color: var(--accent2); }
 
   .submit-section {
     text-align: center;
@@ -387,11 +376,11 @@
   .form-content.hidden { display: none; }
 
   @media (max-width: 480px) {
-    .info-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 22px; }
     .topbar { padding: 12px 16px; }
     .container { padding: 90px 16px 80px; }
     .progress-bar { width: 80px; }
+    .options-grid.inline { flex-direction: column; }
   }
 </style>
 </head>
@@ -400,7 +389,7 @@
 <div class="topbar">
   <div class="logo">MOAI LAB</div>
   <div class="progress-wrap">
-    <span class="progress-label" id="prog-label">0 / 11</span>
+    <span class="progress-label" id="prog-label">0 / 13</span>
     <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
 </div>
@@ -408,251 +397,252 @@
 <div class="container">
   <div class="form-content" id="form-content">
     <div class="hero">
-      <div class="hero-badge">시장 조사 인터뷰</div>
-      <h1>산업군에서의 <br>로봇 도입 의향 조사</h1>
-      <p>현재 산업에서의 어려움과 자동화에 대한 솔직한 의견을 들려주세요. 응답은 익명으로 처리되며 연구 목적으로만 사용됩니다.</p>
+      <div class="hero-badge">인터뷰 질문 #3</div>
+      <h1>현장 업무<br>자동화 수요 조사</h1>
+      <p>현장에서 직접 느끼는 어려움과 자동화에 대한 솔직한 의견을 들려주세요. 응답은 익명으로 처리되며 연구 목적으로만 사용됩니다.</p>
       <div class="hero-meta">
-        <span>⏱ 약 2분 소요</span>
+        <span>⏱ 약 3분 소요</span>
         <div class="dot"></div>
         <span>🔒 익명 처리</span>
         <div class="dot"></div>
-        <span>11개 문항</span>
+        <span>13개 문항</span>
       </div>
     </div>
 
-    <!-- 기본 정보 -->
+    <!-- Section 1 -->
     <div class="section-block">
-      <div class="section-label">기본 정보</div>
-
-      <div class="info-grid">
-        <div class="info-card">
-          <div class="info-card-label">매장 유형</div>
-          <div class="options-grid" id="q-type">
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">한식</div></div>
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">중식</div></div>
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">일식</div></div>
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">양식</div></div>
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">카페·디저트</div></div>
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">패스트푸드·분식</div></div>
-            <div class="option" onclick="selectRadio(this,'type')"><div class="option-radio"></div><div class="option-text">기타</div></div>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-label">매장 규모 (좌석 수)</div>
-          <div class="options-grid" id="q-size">
-            <div class="option" onclick="selectRadio(this,'size')"><div class="option-radio"></div><div class="option-text">5석 이하</div></div>
-            <div class="option" onclick="selectRadio(this,'size')"><div class="option-radio"></div><div class="option-text">6~20석</div></div>
-            <div class="option" onclick="selectRadio(this,'size')"><div class="option-radio"></div><div class="option-text">21~50석</div></div>
-            <div class="option" onclick="selectRadio(this,'size')"><div class="option-radio"></div><div class="option-text">51석 이상</div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qb-staff">
-        <div class="q-label">기본 정보</div>
-        <div class="q-text">현재 직원은 몇 명인가요?</div>
-        <div class="options-grid" id="q-staff">
-          <div class="option" onclick="selectRadio(this,'staff')"><div class="option-radio"></div><div class="option-text">사장 혼자</div></div>
-          <div class="option" onclick="selectRadio(this,'staff')"><div class="option-radio"></div><div class="option-text">1~2명</div></div>
-          <div class="option" onclick="selectRadio(this,'staff')"><div class="option-radio"></div><div class="option-text">3~5명</div></div>
-          <div class="option" onclick="selectRadio(this,'staff')"><div class="option-radio"></div><div class="option-text">6명 이상</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 섹션 1 -->
-    <div class="section-block">
-      <div class="section-label">섹션 1 — 운영 현황</div>
+      <div class="section-label">Section 1 — 응답자 기본 정보</div>
 
       <div class="q-block" id="qb1">
         <div class="q-label">Q1</div>
-        <div class="q-text">현재 매장 운영에서 가장 힘든 점은 무엇인가요?</div>
-        <div class="q-hint">복수 선택 가능</div>
+        <div class="q-text">현재 어떤 분야에서 일하고 계신가요?</div>
         <div class="options-grid" id="q1">
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">직원 채용이 어렵다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">직원이 자주 그만둔다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">인건비 부담이 크다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">피크타임 인력이 부족하다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">일정한 음식 품질 유지가 어렵다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">제조 / 생산</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">물류 / 창고 / 배송</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">건설 / 시설 관리</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">의료 / 바이오 / 제약</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">농업 / 식품 가공</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">서비스 / 유통 / 판매</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">연구 / 실험실</div></div>
+          <div class="option" onclick="selectRadio(this,'q1')"><div class="option-radio"></div><div class="option-text">기타</div></div>
         </div>
+      </div>
 
-        <!-- 조건부: 채용 어려움 선택 시 -->
-        <div class="conditional" id="cond-q2">
-          <div class="q-label">Q2 — 추가 질문</div>
-          <div class="q-text" style="font-size:14px; margin-bottom:12px;">구인 어려움이 얼마나 자주 발생하나요?</div>
-          <div class="options-grid" id="q2">
-            <div class="option" onclick="selectRadio(this,'q2')"><div class="option-radio"></div><div class="option-text">항상 힘들다 (구할 때마다)</div></div>
-            <div class="option" onclick="selectRadio(this,'q2')"><div class="option-radio"></div><div class="option-text">가끔 힘들다 (명절·시즌 등 특정 시기)</div></div>
-            <div class="option" onclick="selectRadio(this,'q2')"><div class="option-radio"></div><div class="option-text">한두 번 있었지만 지금은 괜찮다</div></div>
-          </div>
+      <div class="q-block" id="qb2">
+        <div class="q-label">Q2</div>
+        <div class="q-text">업무에서 본인의 역할은 무엇에 가깝나요?</div>
+        <div class="q-hint">복수 선택 가능</div>
+        <div class="options-grid" id="q2">
+          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">직접 작업을 수행하는 실무자</div></div>
+          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">작업 계획 및 지시를 내리는 관리자</div></div>
+          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">품질 / 공정을 점검하는 감독자</div></div>
+          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
         </div>
       </div>
 
       <div class="q-block" id="qb3">
         <div class="q-label">Q3</div>
-        <div class="q-text">가장 시간이 많이 걸리거나 반복적인 작업은 무엇인가요?</div>
-        <div class="q-hint">최대 3개 선택</div>
+        <div class="q-text">현재 직종 경력은 얼마나 되셨나요?</div>
         <div class="options-grid" id="q3">
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">조리 (볶기·튀기기 등 화구 작업)</div></div>
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">재료 손질·전처리</div></div>
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">서빙·홀 서비스</div></div>
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">설거지·청소</div></div>
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">주문 접수·결제</div></div>
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">재고 관리·발주</div></div>
-          <div class="option" onclick="toggleCheck(this,'q3',3)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">1년 미만</div></div>
+          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">1~3년</div></div>
+          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">3~10년</div></div>
+          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">10년 이상</div></div>
         </div>
       </div>
     </div>
 
-    <!-- 섹션 2 -->
+    <!-- Section 2 -->
     <div class="section-block">
-      <div class="section-label">섹션 2 — 자동화 인식</div>
+      <div class="section-label">Section 2 — 일상 업무의 실제 모습</div>
 
       <div class="q-block" id="qb4">
         <div class="q-label">Q4</div>
-        <div class="q-text">로봇 또는 자동화 장비 도입을 고려해본 적 있나요?</div>
+        <div class="q-text">하루 업무에서 주로 어떤 유형의 작업을 하시나요?</div>
+        <div class="q-hint">복수 선택 후 대표 작업 1가지를 아래에 기재해 주세요</div>
         <div class="options-grid" id="q4">
-          <div class="option" onclick="selectRadio(this,'q4'); showCond('cond-q4',false)"><div class="option-radio"></div><div class="option-text">진지하게 알아본 적 있다</div></div>
-          <div class="option" onclick="selectRadio(this,'q4'); showCond('cond-q4',false)"><div class="option-radio"></div><div class="option-text">생각해본 적은 있지만 알아보지는 않았다</div></div>
-          <div class="option" onclick="selectRadio(this,'q4'); showCond('cond-q4',true)"><div class="option-radio"></div><div class="option-text">생각해본 적 없다</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4')"><div class="option-check">✓</div><div class="option-text">물건/재료를 옮기거나 정리하는 작업</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4')"><div class="option-check">✓</div><div class="option-text">조립 / 가공 / 제작하는 작업</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4')"><div class="option-check">✓</div><div class="option-text">상태나 품질을 눈으로 확인하는 작업</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4')"><div class="option-check">✓</div><div class="option-text">데이터를 입력하거나 기록하는 작업</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4')"><div class="option-check">✓</div><div class="option-text">사람을 응대하거나 서비스를 제공하는 작업</div></div>
+          <div class="option" onclick="toggleCheck(this,'q4')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
         </div>
-        <div class="conditional" id="cond-q4">
-          <div class="q-label">Q4-1 — 추가 질문</div>
-          <div class="q-text" style="font-size:14px; margin-bottom:12px;">고려하지 않은 이유가 있다면?</div>
-          <div class="options-grid" id="q4-1">
-            <div class="option" onclick="toggleCheck(this,'q4-1')"><div class="option-check">✓</div><div class="option-text">로봇이 필요하다고 생각하지 않는다</div></div>
-            <div class="option" onclick="toggleCheck(this,'q4-1')"><div class="option-check">✓</div><div class="option-text">어떤 로봇이 있는지 잘 모른다</div></div>
-            <div class="option" onclick="toggleCheck(this,'q4-1')"><div class="option-check">✓</div><div class="option-text">비용이 부담될 것 같다</div></div>
-            <div class="option" onclick="toggleCheck(this,'q4-1')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        <div style="margin-top:16px;">
+          <div class="q-hint" style="margin-bottom:8px;">
+            위에서 선택한 작업 중 <strong style="color:var(--text2)">하루에 가장 많은 시간을 쓰는 작업 1가지</strong>를 구체적으로 적어주세요.<br>
+            <span style="font-size:11px;">예: "입고된 박스를 무게별로 분류해서 선반에 올림", "용접 후 표면 스크래치 육안 검수"</span>
           </div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qb4b">
-        <div class="q-label">Q4-2</div>
-        <div class="q-text">도입을 고려했거나 망설였다면, 가장 큰 이유는 무엇인가요?</div>
-        <div class="q-hint">복수 선택 가능</div>
-        <div class="options-grid" id="q4b">
-          <div class="option" onclick="toggleCheck(this,'q4b')"><div class="option-check">✓</div><div class="option-text">비용이 너무 비쌌다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4b')"><div class="option-check">✓</div><div class="option-text">우리 매장에 맞는 제품이 없었다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4b')"><div class="option-check">✓</div><div class="option-text">믿을 수 있을지 확신이 없었다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4b')"><div class="option-check">✓</div><div class="option-text">고장 났을 때 대응이 걱정됐다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4b')"><div class="option-check">✓</div><div class="option-text">주방·홀 공간이 부족하다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4b')"><div class="option-check">✓</div><div class="option-text">해당 없음</div></div>
+          <textarea class="text-input" id="q4-text" placeholder="구체적으로 작성해주세요..." oninput="updateProgress()" style="min-height:64px;"></textarea>
         </div>
       </div>
 
       <div class="q-block" id="qb5">
         <div class="q-label">Q5</div>
-        <div class="q-text">로봇이 대신해줬으면 하는 작업 1순위는?</div>
-        <div class="options-grid" id="q5">
-          <div class="option" onclick="selectRadio(this,'q5')"><div class="option-radio"></div><div class="option-text">조리 (볶기·튀기기 등)</div></div>
-          <div class="option" onclick="selectRadio(this,'q5')"><div class="option-radio"></div><div class="option-text">재료 손질</div></div>
-          <div class="option" onclick="selectRadio(this,'q5')"><div class="option-radio"></div><div class="option-text">서빙</div></div>
-          <div class="option" onclick="selectRadio(this,'q5')"><div class="option-radio"></div><div class="option-text">설거지·청소</div></div>
-          <div class="option" onclick="selectRadio(this,'q5')"><div class="option-radio"></div><div class="option-text">없다 / 모르겠다</div></div>
+        <div class="q-text">그 작업의 현재 상황을 체크해 주세요.</div>
+
+        <div class="sub-group">
+          <div class="sub-group-label">이 작업을 하는 빈도</div>
+          <div class="options-grid inline" id="q5a">
+            <div class="option" onclick="selectRadio(this,'q5a')"><div class="option-radio"></div><div class="option-text">매일 반복</div></div>
+            <div class="option" onclick="selectRadio(this,'q5a')"><div class="option-radio"></div><div class="option-text">가끔 발생</div></div>
+          </div>
+        </div>
+
+        <div class="sub-group">
+          <div class="sub-group-label">신체적 부담 (무게, 자세, 반복 동작 등)</div>
+          <div class="options-grid inline" id="q5b">
+            <div class="option" onclick="selectRadio(this,'q5b')"><div class="option-radio"></div><div class="option-text">높음</div></div>
+            <div class="option" onclick="selectRadio(this,'q5b')"><div class="option-radio"></div><div class="option-text">보통</div></div>
+            <div class="option" onclick="selectRadio(this,'q5b')"><div class="option-radio"></div><div class="option-text">낮음</div></div>
+          </div>
+        </div>
+
+        <div class="sub-group">
+          <div class="sub-group-label">집중력 부담 (실수하면 안 되는 긴장감)</div>
+          <div class="options-grid inline" id="q5c">
+            <div class="option" onclick="selectRadio(this,'q5c')"><div class="option-radio"></div><div class="option-text">높음</div></div>
+            <div class="option" onclick="selectRadio(this,'q5c')"><div class="option-radio"></div><div class="option-text">보통</div></div>
+            <div class="option" onclick="selectRadio(this,'q5c')"><div class="option-radio"></div><div class="option-text">낮음</div></div>
+          </div>
+        </div>
+
+        <div class="sub-group">
+          <div class="sub-group-label">전체 업무에서 차지하는 중요도</div>
+          <div class="options-grid inline" id="q5d">
+            <div class="option" onclick="selectRadio(this,'q5d')"><div class="option-radio"></div><div class="option-text">높음</div></div>
+            <div class="option" onclick="selectRadio(this,'q5d')"><div class="option-radio"></div><div class="option-text">보통</div></div>
+            <div class="option" onclick="selectRadio(this,'q5d')"><div class="option-radio"></div><div class="option-text">낮음</div></div>
+          </div>
         </div>
       </div>
 
       <div class="q-block" id="qb6">
         <div class="q-label">Q6</div>
-        <div class="q-text">반대로, 절대 로봇에게 맡기고 싶지 않은 작업과 이유가 있다면?</div>
-        <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="q6" oninput="updateProgress()"></textarea>
-      </div>
-    </div>
-
-    <!-- 섹션 2-1 -->
-    <div class="section-block">
-      <div class="section-label">섹션 2-1 — 로봇에 대한 인식</div>
-
-      <div class="q-block" id="qbA">
-        <div class="q-label">Q-A</div>
-        <div class="q-text">주방에서 쓰는 로봇의 가격이 얼마 정도일 것 같으세요?</div>
-        <div class="options-grid" id="qA">
-          <div class="option" onclick="selectRadio(this,'qA')"><div class="option-radio"></div><div class="option-text">100만원 이하</div></div>
-          <div class="option" onclick="selectRadio(this,'qA')"><div class="option-radio"></div><div class="option-text">100만원 ~ 500만원</div></div>
-          <div class="option" onclick="selectRadio(this,'qA')"><div class="option-radio"></div><div class="option-text">500만원 ~ 1,000만원</div></div>
-          <div class="option" onclick="selectRadio(this,'qA')"><div class="option-radio"></div><div class="option-text">1,000만원 ~ 3,000만원</div></div>
-          <div class="option" onclick="selectRadio(this,'qA')"><div class="option-radio"></div><div class="option-text">3,000만원 이상</div></div>
-          <div class="option" onclick="selectRadio(this,'qA')"><div class="option-radio"></div><div class="option-text">전혀 모르겠다</div></div>
-        </div>
-      </div>
-
-      <div class="q-block" id="qbB">
-        <div class="q-label">Q-B</div>
-        <div class="q-text">주방에 놓을 수 있는 로봇 크기, 어느 정도까지 허용 가능하신가요?</div>
-        <div class="options-grid" id="qB">
-          <div class="option" onclick="selectRadio(this,'qB')"><div class="option-radio"></div><div class="option-text">믹서기·밥솥 정도 (테이블 위에 올라오는 크기)</div></div>
-          <div class="option" onclick="selectRadio(this,'qB')"><div class="option-radio"></div><div class="option-text">전자레인지~냉장고 정도 (주방 한 켠 차지)</div></div>
-          <div class="option" onclick="selectRadio(this,'qB')"><div class="option-radio"></div><div class="option-text">사람 한 명 크기 정도</div></div>
-          <div class="option" onclick="selectRadio(this,'qB')"><div class="option-radio"></div><div class="option-text">크기보다 성능이 중요하다, 크기는 상관없다</div></div>
+        <div class="q-text">이 작업을 수행할 때 겪는 문제가 있나요?</div>
+        <div class="q-hint">복수 선택 가능</div>
+        <div class="options-grid" id="q6">
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">반복 작업으로 인한 피로 누적</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">사람마다 결과 품질이 달라짐</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">작업 환경이 위험하거나 열악함 (소음, 분진, 고온 등)</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">숙련 인력 구하기 어려움</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">실수 발생 시 후처리 비용이 큼</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">야간/연속 운영이 필요하지만 인력 확보가 어려움</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">특별한 문제 없음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q6')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
         </div>
       </div>
     </div>
 
-    <!-- 섹션 3 -->
+    <!-- Section 3 -->
     <div class="section-block">
-      <div class="section-label">섹션 3 — 도입 조건</div>
+      <div class="section-label">Section 3 — 자동화 필요성과 장벽</div>
 
       <div class="q-block" id="qb7">
         <div class="q-label">Q7</div>
-        <div class="q-text">로봇 도입 시 가장 중요하게 보는 기준은?</div>
-        <div class="q-hint">1~3순위로 클릭해서 선택해주세요</div>
-        <div id="q7">
-          <div class="rank-item" onclick="toggleRank(this,'q7')"><div class="rank-num">-</div><div class="option-text" style="font-size:14px">가격</div></div>
-          <div class="rank-item" onclick="toggleRank(this,'q7')"><div class="rank-num">-</div><div class="option-text" style="font-size:14px">작업 정확도·신뢰성</div></div>
-          <div class="rank-item" onclick="toggleRank(this,'q7')"><div class="rank-num">-</div><div class="option-text" style="font-size:14px">고장 시 AS 속도</div></div>
-          <div class="rank-item" onclick="toggleRank(this,'q7')"><div class="rank-num">-</div><div class="option-text" style="font-size:14px">설치·운영 편의성</div></div>
-          <div class="rank-item" onclick="toggleRank(this,'q7')"><div class="rank-num">-</div><div class="option-text" style="font-size:14px">위생·안전 기준 충족</div></div>
+        <div class="q-text">"이 작업은 자동화됐으면 좋겠다"고 느끼신 적 있나요?</div>
+        <div class="options-grid" id="q7">
+          <div class="option" onclick="selectRadio(this,'q7'); showAutomationCond(true)"><div class="option-radio"></div><div class="option-text">자주 느낀다</div></div>
+          <div class="option" onclick="selectRadio(this,'q7'); showAutomationCond(true)"><div class="option-radio"></div><div class="option-text">가끔 느낀다</div></div>
+          <div class="option" onclick="selectRadio(this,'q7'); showAutomationCond(false)"><div class="option-radio"></div><div class="option-text">거의 없다</div></div>
         </div>
       </div>
 
-      <div class="q-block" id="qb8">
-        <div class="q-label">Q8</div>
-        <div class="q-text">어떤 도입 방식이 더 편하신가요?</div>
-        <div class="options-grid" id="q8">
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">월 구독 (초기 비용 없이 월정액, 고장 시 교체 포함)</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">일시 구매 (초기 비용 높지만 이후 유지비 낮음)</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">리스 (중간 형태)</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">잘 모르겠다</div></div>
-        </div>
-      </div>
+      <div class="cond-block" id="automation-cond">
+        <div class="q-block" id="qb8">
+          <div class="q-label">Q8</div>
+          <div class="q-text">자동화하고 싶은 작업을 아래 형식으로 설명해 주세요.</div>
 
-      <div class="q-block" id="qb9">
-        <div class="q-label">Q9</div>
-        <div class="q-text">직원 1명 월 인건비와 비교했을 때, 어느 수준이면 도입을 검토하시겠어요?</div>
-        <div class="options-grid" id="q9">
-          <div class="option" onclick="selectRadio(this,'q9')"><div class="option-radio"></div><div class="option-text">인건비의 25% 이하 (약 50~60만원)</div></div>
-          <div class="option" onclick="selectRadio(this,'q9')"><div class="option-radio"></div><div class="option-text">인건비의 50% 수준 (약 100~120만원)</div></div>
-          <div class="option" onclick="selectRadio(this,'q9')"><div class="option-radio"></div><div class="option-text">인건비와 비슷한 수준 (약 200~250만원)</div></div>
-          <div class="option" onclick="selectRadio(this,'q9')"><div class="option-radio"></div><div class="option-text">인건비보다 높아도 품질·안정성이 보장되면 괜찮다</div></div>
-          <div class="option" onclick="selectRadio(this,'q9')"><div class="option-radio"></div><div class="option-text">어떤 가격이어도 도입할 생각이 없다</div></div>
+          <div class="q8-sub">
+            <div class="q8-sub-label">어떤 작업인가요?</div>
+            <div class="q8-sub-hint">예: "지게차로 팔레트를 창고 내 지정 위치에 옮기는 작업"</div>
+            <textarea class="text-input" id="q8a" placeholder="작업을 설명해주세요..." oninput="updateProgress()" style="min-height:64px;"></textarea>
+          </div>
+          <div class="q8-sub">
+            <div class="q8-sub-label">얼마나 자주, 누가 하나요?</div>
+            <div class="q8-sub-hint">예: "하루 3~4회, 작업자 2명이 교대로"</div>
+            <textarea class="text-input" id="q8b" placeholder="빈도와 담당자를 적어주세요..." oninput="updateProgress()" style="min-height:64px;"></textarea>
+          </div>
+          <div class="q8-sub">
+            <div class="q8-sub-label">작업 환경이 어떤가요?</div>
+            <div class="q8-sub-hint">예: "좁은 통로, 바닥에 물기 있음, 조명 어두움" / "항상 동일한 공간, 정해진 동선"</div>
+            <textarea class="text-input" id="q8c" placeholder="작업 환경을 설명해주세요..." oninput="updateProgress()" style="min-height:64px;"></textarea>
+          </div>
+        </div>
+
+        <div class="q-block" id="qb9">
+          <div class="q-label">Q9</div>
+          <div class="q-text">그 작업의 특성을 체크해 주세요.</div>
+          <div class="q-hint">해당하는 것 모두 선택</div>
+          <div class="options-grid" id="q9">
+            <div class="option" onclick="toggleCheck(this,'q9')"><div class="option-check">✓</div><div class="option-text">매번 거의 동일한 방식으로 반복됨</div></div>
+            <div class="option" onclick="toggleCheck(this,'q9')"><div class="option-check">✓</div><div class="option-text">상황에 따라 판단이 필요할 때가 있음</div></div>
+            <div class="option" onclick="toggleCheck(this,'q9')"><div class="option-check">✓</div><div class="option-text">작업 대상(물건/환경)의 크기·위치·형태가 매번 다름</div></div>
+            <div class="option" onclick="toggleCheck(this,'q9')"><div class="option-check">✓</div><div class="option-text">좁거나 복잡한 공간에서 이루어짐</div></div>
+            <div class="option" onclick="toggleCheck(this,'q9')"><div class="option-check">✓</div><div class="option-text">다른 사람 또는 장비와 함께 작업이 이루어짐</div></div>
+            <div class="option" onclick="toggleCheck(this,'q9')"><div class="option-check">✓</div><div class="option-text">외부 환경(온도, 습도, 먼지 등)의 영향을 많이 받음</div></div>
+          </div>
+        </div>
+
+        <div class="q-block" id="qb10">
+          <div class="q-label">Q10</div>
+          <div class="q-text">이 작업이 아직 자동화되지 않은 이유가 무엇이라고 생각하시나요?</div>
+          <div class="q-hint">복수 선택 가능</div>
+          <div class="options-grid" id="q10">
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">도입 비용이 너무 클 것 같아서</div></div>
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">자동화가 기술적으로 가능한지 몰라서</div></div>
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">도입 결정 권한이 나에게 없어서</div></div>
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">도입을 시도했지만 실제 현장에서 잘 작동하지 않아서</div></div>
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">작업 자체가 너무 불규칙하거나 복잡해서</div></div>
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">이유를 잘 모르겠음</div></div>
+            <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- 섹션 4 -->
+    <!-- Section 4 -->
     <div class="section-block">
-      <div class="section-label">섹션 4 — 마무리</div>
-
-      <div class="q-block" id="qb10">
-        <div class="q-label">Q10</div>
-        <div class="q-text">로봇 관련 정보를 주로 어디서 얻으시나요?</div>
-        <div class="q-hint">복수 선택 가능</div>
-        <div class="options-grid" id="q10">
-          <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">유튜브·SNS</div></div>
-          <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">지인·업계 소문</div></div>
-          <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">전시회·박람회</div></div>
-          <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">뉴스·기사</div></div>
-          <div class="option" onclick="toggleCheck(this,'q10')"><div class="option-check">✓</div><div class="option-text">관심 없어서 찾아본 적 없다</div></div>
-        </div>
-      </div>
+      <div class="section-label">Section 4 — 자동화에 대한 기대와 우려</div>
 
       <div class="q-block" id="qb11">
         <div class="q-label">Q11</div>
-        <div class="q-text">로봇 도입과 관련해 가장 걱정되는 점을 자유롭게 적어주세요.</div>
-        <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="q11" oninput="updateProgress()"></textarea>
+        <div class="q-text">업무 자동화 도입 시 가장 기대되는 효과는 무엇인가요?</div>
+        <div class="q-hint">최대 2개 선택</div>
+        <div class="options-grid" id="q11">
+          <div class="option" onclick="toggleCheck(this,'q11',2)"><div class="option-check">✓</div><div class="option-text">반복 작업에서 벗어나 더 중요한 일에 집중할 수 있음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q11',2)"><div class="option-check">✓</div><div class="option-text">품질이나 정확도가 일정하게 유지됨</div></div>
+          <div class="option" onclick="toggleCheck(this,'q11',2)"><div class="option-check">✓</div><div class="option-text">안전사고 위험이 줄어듦</div></div>
+          <div class="option" onclick="toggleCheck(this,'q11',2)"><div class="option-check">✓</div><div class="option-text">인력 부족 문제 해소</div></div>
+          <div class="option" onclick="toggleCheck(this,'q11',2)"><div class="option-check">✓</div><div class="option-text">야간 / 연속 운영이 가능해짐</div></div>
+          <div class="option" onclick="toggleCheck(this,'q11',2)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        </div>
+      </div>
+
+      <div class="q-block" id="qb12">
+        <div class="q-label">Q12</div>
+        <div class="q-text">자동화 도입에 대해 걱정되는 점이 있다면?</div>
+        <div class="q-hint">복수 선택 가능</div>
+        <div class="options-grid" id="q12">
+          <div class="option" onclick="toggleCheck(this,'q12')"><div class="option-check">✓</div><div class="option-text">내 일자리가 줄어들 수 있음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q12')"><div class="option-check">✓</div><div class="option-text">고장이나 오작동 시 더 큰 문제가 생길 수 있음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q12')"><div class="option-check">✓</div><div class="option-text">현장 상황에 잘 맞지 않을 것 같음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q12')"><div class="option-check">✓</div><div class="option-text">도입 후 관리/운영이 어려울 것 같음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q12')"><div class="option-check">✓</div><div class="option-text">특별한 걱정 없음</div></div>
+          <div class="option" onclick="toggleCheck(this,'q12')"><div class="option-check">✓</div><div class="option-text">기타</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="section-block">
+      <div class="section-label">Section 5 — 마지막 한 마디</div>
+
+      <div class="q-block" id="qb13">
+        <div class="q-label">Q13</div>
+        <div class="q-text">현장에서 "이것만 해결되면 정말 편할 텐데"라고 느끼는 것이 있다면 자유롭게 적어주세요.</div>
+        <div class="q-hint">자동화와 무관한 내용도 괜찮습니다</div>
+        <textarea class="text-input" id="q13" placeholder="자유롭게 작성해주세요..." oninput="updateProgress()"></textarea>
       </div>
     </div>
 
@@ -666,23 +656,21 @@
   <div class="thank-you" id="thank-you">
     <div class="ty-icon">✓</div>
     <div class="ty-title">소중한 응답 감사합니다</div>
-    <div class="ty-desc">응답 내용은 F&B 로봇 솔루션 개발에 소중하게 활용하겠습니다.<br><br>MOAI LAB은 더 나은 현장을 만들기 위해 노력합니다.</div>
+    <div class="ty-desc">응답 내용은 현장 업무 자동화 솔루션 개발에 소중하게 활용하겠습니다.<br><br>이 설문은 현장 업무 자동화 가능성을 탐색하기 위한 조사이며, 개인 식별 정보는 수집하지 않습니다.</div>
   </div>
 </div>
 
 <script>
 const radioState = {};
 const checkState = {};
-const rankState = {};
 
 function selectRadio(el, group) {
-  const container = el.closest('.options-grid, .info-card');
+  const container = el.closest('.options-grid');
   if (!container) return;
   container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   radioState[group] = el.querySelector('.option-text').textContent;
   updateProgress();
-  if (group === 'q1') checkQ1Conditional();
 }
 
 function toggleCheck(el, group, max) {
@@ -696,84 +684,54 @@ function toggleCheck(el, group, max) {
   if (idx > -1) checkState[group].splice(idx, 1);
   else checkState[group].push(text);
   updateProgress();
-  if (group === 'q1') checkQ1Conditional();
 }
 
-function checkQ1Conditional() {
-  const selected = document.querySelectorAll('#q1 .option.selected');
-  const texts = Array.from(selected).map(o => o.querySelector('.option-text').textContent);
-  const hasHiring = texts.some(t => t.includes('채용') || t.includes('그만'));
-  const cond = document.getElementById('cond-q2');
-  if (hasHiring) cond.classList.add('show');
-  else cond.classList.remove('show');
-}
-
-function showCond(id, show) {
-  const el = document.getElementById(id);
-  if (show) el.classList.add('show');
-  else el.classList.remove('show');
-}
-
-const rankCounts = {};
-function toggleRank(el, group) {
-  if (!rankCounts[group]) rankCounts[group] = 0;
-  if (el.classList.contains('selected')) {
-    const num = el.querySelector('.rank-num');
-    const myRank = parseInt(num.textContent);
-    el.classList.remove('selected');
-    num.textContent = '-';
-    num.className = 'rank-num';
-    const container = document.getElementById(group);
-    container.querySelectorAll('.rank-item.selected').forEach(item => {
-      const n = item.querySelector('.rank-num');
-      const r = parseInt(n.textContent);
-      if (r > myRank) {
-        const newR = r - 1;
-        n.textContent = newR;
-        n.className = 'rank-num r' + newR;
-      }
-    });
-    rankCounts[group] = Math.max(0, rankCounts[group] - 1);
-    updateProgress();
-    return;
-  }
-  if (rankCounts[group] >= 3) return;
-  rankCounts[group]++;
-  el.classList.add('selected');
-  const num = el.querySelector('.rank-num');
-  num.textContent = rankCounts[group];
-  num.className = 'rank-num r' + rankCounts[group];
+function showAutomationCond(show) {
+  const el = document.getElementById('automation-cond');
+  el.classList.toggle('show', show);
   updateProgress();
 }
 
 function countAnswered() {
   let count = 0;
-  const groups = ['type','size','staff','q1','q3','q4','q5','qA','qB','q8','q9'];
-  groups.forEach(g => {
-    if (radioState[g] || (checkState[g] && checkState[g].length > 0)) count++;
-  });
-  if (rankCounts['q7'] > 0) count++;
-  if (document.getElementById('q6').value.trim()) count++;
+  const condVisible = document.getElementById('automation-cond').classList.contains('show');
+
+  if (radioState['q1']) count++;
+  if (checkState['q2'] && checkState['q2'].length > 0) count++;
+  if (radioState['q3']) count++;
+  if ((checkState['q4'] && checkState['q4'].length > 0) || document.getElementById('q4-text').value.trim()) count++;
+  if (radioState['q5a'] || radioState['q5b'] || radioState['q5c'] || radioState['q5d']) count++;
+  if (checkState['q6'] && checkState['q6'].length > 0) count++;
+  if (radioState['q7']) count++;
+
+  if (condVisible) {
+    const q8filled = ['q8a','q8b','q8c'].some(id => document.getElementById(id).value.trim());
+    if (q8filled) count++;
+    if (checkState['q9'] && checkState['q9'].length > 0) count++;
+    if (checkState['q10'] && checkState['q10'].length > 0) count++;
+  }
+
+  if (checkState['q11'] && checkState['q11'].length > 0) count++;
+  if (checkState['q12'] && checkState['q12'].length > 0) count++;
+  if (document.getElementById('q13').value.trim()) count++;
+
   return count;
 }
 
+function getTotal() {
+  return document.getElementById('automation-cond').classList.contains('show') ? 13 : 10;
+}
+
 function updateProgress() {
-  const total = 11;
+  const total = getTotal();
   const done = countAnswered();
   document.getElementById('prog-label').textContent = done + ' / ' + total;
   document.getElementById('prog-fill').style.width = Math.round(done / total * 100) + '%';
   document.querySelectorAll('.q-block').forEach(b => {
-    const hasInput = b.querySelector('.option.selected, textarea');
-    if (hasInput) b.classList.add('active');
+    const hasSelection = b.querySelector('.option.selected');
+    const hasText = Array.from(b.querySelectorAll('textarea')).some(t => t.value.trim());
+    b.classList.toggle('active', !!(hasSelection || hasText));
   });
-}
-
-function getRankOrder(group) {
-  const items = document.querySelectorAll('#' + group + ' .rank-item.selected');
-  const sorted = Array.from(items).sort((a, b) => {
-    return parseInt(a.querySelector('.rank-num').textContent) - parseInt(b.querySelector('.rank-num').textContent);
-  });
-  return sorted.map(el => el.querySelector('.option-text').textContent);
 }
 
 async function submitForm() {
@@ -784,24 +742,25 @@ async function submitForm() {
   btn.disabled = true;
 
   const payload = {
-    type:   radioState['type']  || "",
-    size:   radioState['size']  || "",
-    staff:  radioState['staff'] || "",
-    q1:     checkState['q1']    || [],
-    q2:     radioState['q2']    || "",
-    q3:     checkState['q3']    || [],
-    q4:     radioState['q4']    || "",
-    q4_1:   checkState['q4-1'] || [],
-    q4b:    checkState['q4b']  || [],
-    q5:     radioState['q5']    || "",
-    q6:     document.getElementById('q6').value,
-    qA:     radioState['qA']    || "",
-    qB:     radioState['qB']    || "",
-    q7:     getRankOrder('q7'),
-    q8:     radioState['q8']    || "",
-    q9:     radioState['q9']    || "",
-    q10:    checkState['q10']   || [],
-    q11:    document.getElementById('q11').value,
+    q1_field:          radioState['q1']   || "",
+    q2_role:           checkState['q2']   || [],
+    q3_experience:     radioState['q3']   || "",
+    q4_tasks:          checkState['q4']   || [],
+    q4_main_task:      document.getElementById('q4-text').value,
+    q5_frequency:      radioState['q5a']  || "",
+    q5_physical:       radioState['q5b']  || "",
+    q5_focus:          radioState['q5c']  || "",
+    q5_importance:     radioState['q5d']  || "",
+    q6_problems:       checkState['q6']   || [],
+    q7_desire:         radioState['q7']   || "",
+    q8_task_desc:      document.getElementById('q8a').value,
+    q8_freq_who:       document.getElementById('q8b').value,
+    q8_environment:    document.getElementById('q8c').value,
+    q9_task_char:      checkState['q9']   || [],
+    q10_not_automated: checkState['q10']  || [],
+    q11_expected:      checkState['q11']  || [],
+    q12_concerns:      checkState['q12']  || [],
+    q13_free_text:     document.getElementById('q13').value,
   };
 
   try {
