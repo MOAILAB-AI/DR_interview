@@ -1,936 +1,1354 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dream Robotics: MOAI LAB — 로봇 데이터 구매 의향 조사</title>
-<style>
-  :root {
-    --bg: #0e0e10;
-    --bg2: #16161a;
-    --bg3: #1e1e24;
-    --border: rgba(255,255,255,0.08);
-    --border-hover: rgba(255,255,255,0.18);
-    --text: #f0f0f0;
-    --text2: #9a9aaa;
-    --text3: #5a5a6a;
-    --accent: #6c63ff;
-    --accent2: #8b84ff;
-    --accent-bg: rgba(108,99,255,0.12);
-    --accent-border: rgba(108,99,255,0.4);
-    --green: #22c55e;
-    --green-bg: rgba(34,197,94,0.1);
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, 'Pretendard', 'Noto Sans KR', sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-  .topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: rgba(14,14,16,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .logo {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--accent2);
-    text-transform: uppercase;
-  }
-  .progress-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .progress-label {
-    font-size: 12px;
-    color: var(--text2);
-  }
-  .progress-bar {
-    width: 120px;
-    height: 3px;
-    background: var(--bg3);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 99px;
-    transition: width 0.4s ease;
-  }
-  .container {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 100px 24px 80px;
-  }
-  .hero {
-    text-align: center;
-    padding: 48px 0 56px;
-  }
-  .hero-badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    background: var(--accent-bg);
-    border: 1px solid var(--accent-border);
-    border-radius: 99px;
-    padding: 5px 14px;
-    margin-bottom: 24px;
-  }
-  .hero h1 {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 14px;
-    letter-spacing: -0.02em;
-  }
-  .hero p {
-    color: var(--text2);
-    font-size: 15px;
-    max-width: 440px;
-    margin: 0 auto 8px;
-    line-height: 1.7;
-  }
-  .hero-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  .hero-meta span {
-    font-size: 12px;
-    color: var(--text3);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text3); }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Robotics: MOAI LAB — 로봇 데이터 구매 의향 조사</title>
+    <style>
+        :root {
+            --bg: #0e0e10;
+            --bg2: #16161a;
+            --bg3: #1e1e24;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.18);
+            --text: #f0f0f0;
+            --text2: #9a9aaa;
+            --text3: #5a5a6a;
+            --accent: #6c63ff;
+            --accent2: #8b84ff;
+            --accent-bg: rgba(108, 99, 255, 0.12);
+            --accent-border: rgba(108, 99, 255, 0.4);
+            --green: #22c55e;
+            --green-bg: rgba(34, 197, 94, 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-  .section-block {
-    margin-bottom: 48px;
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  .q-block {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    margin-bottom: 14px;
-    transition: border-color 0.2s;
-  }
-  .q-block.active {
-    border-color: var(--accent-border);
-  }
-  .q-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent2);
-    letter-spacing: 0.06em;
-    margin-bottom: 8px;
-  }
-  .q-text {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
-  .q-hint {
-    font-size: 12px;
-    color: var(--text3);
-    margin-bottom: 14px;
-  }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, 'Pretendard', 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-  .options-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all 0.15s;
-    user-select: none;
-    background: var(--bg3);
-  }
-  .option:hover {
-    border-color: var(--border-hover);
-    background: rgba(255,255,255,0.04);
-  }
-  .option.selected {
-    border-color: var(--accent-border);
-    background: var(--accent-bg);
-  }
-  .option-check {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 1.5px solid var(--border-hover);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    transition: all 0.15s;
-    color: transparent;
-  }
-  .option.selected .option-check {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-  }
-  .option-radio {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border-hover);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-  }
-  .option-radio::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: transparent;
-    transition: all 0.15s;
-  }
-  .option.selected .option-radio {
-    border-color: var(--accent);
-  }
-  .option.selected .option-radio::after {
-    background: var(--accent);
-  }
-  .option-text {
-    font-size: 14px;
-    color: var(--text);
-    flex: 1;
-  }
-  .option.selected .option-text {
-    color: var(--accent2);
-  }
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(14, 14, 16, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 14px;
-  }
-  .info-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-  }
-  .info-card-label {
-    font-size: 12px;
-    color: var(--text2);
-    margin-bottom: 8px;
-  }
+        .logo {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--accent2);
+            text-transform: uppercase;
+        }
 
-  .text-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-size: 14px;
-    padding: 12px 14px;
-    outline: none;
-    resize: vertical;
-    min-height: 80px;
-    transition: border-color 0.2s;
-    font-family: inherit;
-    line-height: 1.6;
-  }
-  .text-input:focus {
-    border-color: var(--accent-border);
-  }
-  .text-input::placeholder { color: var(--text3); }
+        .progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-  .conditional {
-    background: rgba(108,99,255,0.06);
-    border: 1px dashed var(--accent-border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    margin-top: 10px;
-    display: none;
-  }
-  .conditional.show { display: block; }
-  .conditional .q-label { color: var(--accent2); opacity: 0.7; }
+        .progress-label {
+            font-size: 12px;
+            color: var(--text2);
+        }
 
-  .submit-section {
-    text-align: center;
-    padding: 40px 0 60px;
-  }
-  .submit-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: var(--radius);
-    padding: 14px 36px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.01em;
-  }
-  .submit-btn:hover { background: var(--accent2); transform: translateY(-1px); }
-  .submit-btn:active { transform: translateY(0); }
-  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .progress-bar {
+            width: 120px;
+            height: 3px;
+            background: var(--bg3);
+            border-radius: 99px;
+            overflow: hidden;
+        }
 
-  .submit-btns {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .consult-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: var(--accent2);
-    border: 1.5px solid var(--accent-border);
-    border-radius: var(--radius);
-    padding: 13px 28px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.01em;
-    font-family: inherit;
-  }
-  .consult-btn:hover {
-    background: var(--accent-bg);
-    border-color: var(--accent2);
-  }
-  .consult-btn.active {
-    background: var(--accent-bg);
-    border-color: var(--accent2);
-  }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
 
-  .submit-note {
-    font-size: 12px;
-    color: var(--text3);
-    margin-top: 14px;
-  }
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 100px 24px 80px;
+        }
 
-  /* 상담 패널 */
-  .consult-panel {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .consult-panel.open {
-    max-height: 700px;
-  }
-  .consult-inner {
-    background: var(--bg2);
-    border: 1px solid var(--accent-border);
-    border-radius: var(--radius);
-    padding: 24px;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  .consult-inner .q-text {
-    font-size: 14px;
-    color: var(--text2);
-    margin-bottom: 0;
-  }
-  .consult-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 16px;
-  }
-  .consult-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-size: 14px;
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    font-family: inherit;
-    line-height: 1.5;
-  }
-  .consult-input:focus { border-color: var(--accent-border); }
-  .consult-input::placeholder { color: var(--text3); }
-  .consult-input.textarea {
-    resize: vertical;
-    min-height: 64px;
-  }
-  .consult-submit-row {
-    margin-top: 14px;
-  }
-  .consult-success {
-    display: none;
-    margin-top: 16px;
-    text-align: center;
-    padding: 16px;
-    background: var(--green-bg);
-    border: 1px solid rgba(34,197,94,0.2);
-    border-radius: var(--radius-sm);
-  }
-  .consult-success.show { display: block; }
-  .consult-success-msg {
-    color: var(--green);
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 14px;
-  }
-  .homepage-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--bg3);
-    color: var(--accent2);
-    border: 1px solid var(--accent-border);
-    border-radius: var(--radius);
-    padding: 11px 22px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-  .homepage-btn:hover {
-    background: var(--accent-bg);
-    border-color: var(--accent2);
-    transform: translateY(-1px);
-  }
-  .ty-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    margin-top: 24px;
-  }
+        .hero {
+            text-align: center;
+            padding: 48px 0 56px;
+        }
 
-  .thank-you {
-    display: none;
-    text-align: center;
-    padding: 80px 24px;
-  }
-  .thank-you.show { display: block; }
-  .ty-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--green-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 24px;
-    font-size: 28px;
-  }
-  .ty-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
-  }
-  .ty-desc {
-    color: var(--text2);
-    font-size: 15px;
-    line-height: 1.7;
-    max-width: 380px;
-    margin: 0 auto;
-  }
+        .hero-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 99px;
+            padding: 5px 14px;
+            margin-bottom: 24px;
+        }
 
-  .other-input-wrap {
-    display: none;
-    margin-top: 6px;
-    padding: 0 2px;
-  }
-  .other-input-wrap.show { display: block; }
-  .other-input {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--accent-border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-size: 14px;
-    padding: 10px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    font-family: inherit;
-  }
-  .other-input:focus { border-color: var(--accent2); }
-  .other-input::placeholder { color: var(--text3); }
+        .hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 14px;
+            letter-spacing: -0.02em;
+        }
 
-  .form-content { transition: opacity 0.3s; }
-  .form-content.hidden { display: none; }
+        .hero p {
+            color: var(--text2);
+            font-size: 15px;
+            max-width: 440px;
+            margin: 0 auto 8px;
+            line-height: 1.7;
+        }
 
-  @media (max-width: 480px) {
-    .info-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 22px; }
-    .topbar { padding: 12px 16px; }
-    .container { padding: 90px 16px 80px; }
-    .progress-bar { width: 80px; }
-    .submit-btns { flex-direction: column-reverse; }
-    .submit-btn, .consult-btn { width: 100%; justify-content: center; }
-  }
-</style>
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .hero-meta span {
+            font-size: 12px;
+            color: var(--text3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text3);
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-block {
+            margin-bottom: 48px;
+        }
+
+        .q-block {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            margin-bottom: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .q-block.active {
+            border-color: var(--accent-border);
+        }
+
+        .q-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent2);
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .q-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .q-hint {
+            font-size: 12px;
+            color: var(--text3);
+            margin-bottom: 14px;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+            background: var(--bg3);
+        }
+
+        .option:hover {
+            border-color: var(--border-hover);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .option.selected {
+            border-color: var(--accent-border);
+            background: var(--accent-bg);
+        }
+
+        .option-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 1.5px solid var(--border-hover);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            transition: all 0.15s;
+            color: transparent;
+        }
+
+        .option.selected .option-check {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .option-radio {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border-hover);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .option-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: transparent;
+            transition: all 0.15s;
+        }
+
+        .option.selected .option-radio {
+            border-color: var(--accent);
+        }
+
+        .option.selected .option-radio::after {
+            background: var(--accent);
+        }
+
+        .option-text {
+            font-size: 14px;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .option.selected .option-text {
+            color: var(--accent2);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .info-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+        }
+
+        .info-card-label {
+            font-size: 12px;
+            color: var(--text2);
+            margin-bottom: 8px;
+        }
+
+        .text-input {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 14px;
+            padding: 12px 14px;
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        .text-input:focus {
+            border-color: var(--accent-border);
+        }
+
+        .text-input::placeholder {
+            color: var(--text3);
+        }
+
+        .conditional {
+            background: rgba(108, 99, 255, 0.06);
+            border: 1px dashed var(--accent-border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .conditional.show {
+            display: block;
+        }
+
+        .conditional .q-label {
+            color: var(--accent2);
+            opacity: 0.7;
+        }
+
+        .submit-section {
+            text-align: center;
+            padding: 40px 0 60px;
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 14px 36px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent2);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btns {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .consult-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--accent2);
+            border: 1.5px solid var(--accent-border);
+            border-radius: var(--radius);
+            padding: 13px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.01em;
+            font-family: inherit;
+        }
+
+        .consult-btn:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent2);
+        }
+
+        .consult-btn.active {
+            background: var(--accent-bg);
+            border-color: var(--accent2);
+        }
+
+        .submit-note {
+            font-size: 12px;
+            color: var(--text3);
+            margin-top: 14px;
+        }
+
+        /* 상담 패널 */
+        .consult-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .consult-panel.open {
+            max-height: 700px;
+        }
+
+        .consult-inner {
+            background: var(--bg2);
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .consult-inner .q-text {
+            font-size: 14px;
+            color: var(--text2);
+            margin-bottom: 0;
+        }
+
+        .consult-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .consult-input {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 14px;
+            padding: 12px 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .consult-input:focus {
+            border-color: var(--accent-border);
+        }
+
+        .consult-input::placeholder {
+            color: var(--text3);
+        }
+
+        .consult-input.textarea {
+            resize: vertical;
+            min-height: 64px;
+        }
+
+        .consult-submit-row {
+            margin-top: 14px;
+        }
+
+        .consult-success {
+            display: none;
+            margin-top: 16px;
+            text-align: center;
+            padding: 16px;
+            background: var(--green-bg);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: var(--radius-sm);
+        }
+
+        .consult-success.show {
+            display: block;
+        }
+
+        .consult-success-msg {
+            color: var(--green);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+
+        .homepage-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg3);
+            color: var(--accent2);
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius);
+            padding: 11px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .homepage-btn:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent2);
+            transform: translateY(-1px);
+        }
+
+        .ty-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .thank-you {
+            display: none;
+            text-align: center;
+            padding: 80px 24px;
+        }
+
+        .thank-you.show {
+            display: block;
+        }
+
+        .ty-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--green-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 28px;
+        }
+
+        .ty-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .ty-desc {
+            color: var(--text2);
+            font-size: 15px;
+            line-height: 1.7;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .other-input-wrap {
+            display: none;
+            margin-top: 6px;
+            padding: 0 2px;
+        }
+
+        .other-input-wrap.show {
+            display: block;
+        }
+
+        .other-input {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 14px;
+            padding: 10px 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .other-input:focus {
+            border-color: var(--accent2);
+        }
+
+        .other-input::placeholder {
+            color: var(--text3);
+        }
+
+        /* 역할 선택 카드 */
+        .role-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .role-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .role-card:hover {
+            border-color: var(--accent-border);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .role-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .role-card p {
+            font-size: 13px;
+            color: var(--text2);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text3);
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+            margin-bottom: 28px;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            color: var(--text2);
+        }
+
+        .form-content {
+            transition: opacity 0.3s;
+        }
+
+        .form-content.hidden {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 22px;
+            }
+
+            .topbar {
+                padding: 12px 16px;
+            }
+
+            .container {
+                padding: 90px 16px 80px;
+            }
+
+            .progress-bar {
+                width: 80px;
+            }
+
+            .submit-btns {
+                flex-direction: column-reverse;
+            }
+
+            .submit-btn,
+            .consult-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="topbar">
-  <div class="logo">MOAI LAB</div>
-  <div class="progress-wrap">
-    <span class="progress-label" id="prog-label">0 / 11</span>
-    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="form-content" id="form-content">
-    <div class="hero">
-      <div class="hero-badge">시장 조사 인터뷰 #2</div>
-      <h1>로봇 회사 기술자 대상<br>데이터 구매 의향 조사</h1>
-      <p>로봇 학습 데이터 수집 방식과 외부 데이터 구매 의향에 대한 솔직한 의견을 들려주세요. 응답은 익명으로 처리되며 연구 목적으로만 사용됩니다.</p>
-      <div class="hero-meta">
-        <span>⏱ 약 3분 소요</span>
-        <div class="dot"></div>
-        <span>🔒 익명 처리</span>
-        <div class="dot"></div>
-        <span>9개 문항</span>
-      </div>
+    <div class="topbar">
+        <div class="logo">Dream Robotics: MOAI LAB</div>
+        <div class="progress-wrap">
+            <span class="progress-label" id="prog-label">0 / 11</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- 기본 정보 -->
-    <div class="section-block">
-      <div class="section-label">기본 정보</div>
+    <div class="container">
+        <!-- ============ 역할 선택 화면 ============ -->
+        <div id="role-screen">
+            <div class="hero">
+                <div class="hero-badge">시장 조사 인터뷰 #2</div>
+                <h1>로봇 회사 기술자 대상<br>데이터 구매 의향 조사</h1>
+                <p>로봇 학습 데이터 수집 방식과 외부 데이터 구매 의향에 대한 솔직한 의견을 들려주세요. 응답은 익명으로 처리되며 연구 목적으로만 사용됩니다.</p>
+                <div class="hero-meta">
+                    <span>⏱ 약 3분 소요</span>
+                    <div class="dot"></div>
+                    <span>🔒 익명 처리</span>
+                    <div class="dot"></div>
+                    <span>9개 문항</span>
+                </div>
+            </div>
+            <div class="section-label">시작하기 전에 — 본인의 역할을 선택해주세요</div>
+            <div class="role-cards">
+                <div class="role-card" onclick="startSurvey('dev')">
+                    <h3>개발자 · 실무자</h3>
+                    <p>로봇을 직접 개발하거나 데이터 수집·학습을 담당하는 분</p>
+                </div>
+                <div class="role-card" onclick="startSurvey('manager')">
+                    <h3>관리자 · 대표 · 창업자</h3>
+                    <p>개발 방향을 결정하거나 기술 도입·투자를 검토하는 분</p>
+                </div>
+            </div>
+        </div>
 
-      <div class="info-grid">
-        <div class="info-card">
-          <div class="info-card-label">포지션</div>
-          <div class="options-grid" id="q-position">
-            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',false)"><div class="option-radio"></div><div class="option-text">개발자</div></div>
-            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',false)"><div class="option-radio"></div><div class="option-text">사업개발</div></div>
-            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',false)"><div class="option-radio"></div><div class="option-text">창업자 / 대표</div></div>
-            <div class="option" onclick="selectRadio(this,'position'); showOther('position-other',true)"><div class="option-radio"></div><div class="option-text">기타</div></div>
-          </div>
-          <div class="other-input-wrap" id="position-other">
-            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="position-other-text" />
-          </div>
+        <div class="form-content" id="form-content" style="display:none;">
+            <button class="back-btn" onclick="backToRole()">← 역할 다시 선택</button>
+            <div class="hero">
+                <div class="hero-badge">시장 조사 인터뷰 #2</div>
+                <h1>로봇 회사 기술자 대상<br>데이터 구매 의향 조사</h1>
+                <p>로봇 학습 데이터 수집 방식과 외부 데이터 구매 의향에 대한 솔직한 의견을 들려주세요. 응답은 익명으로 처리되며 연구 목적으로만 사용됩니다.</p>
+                <div class="hero-meta">
+                    <span>⏱ 약 3분 소요</span>
+                    <div class="dot"></div>
+                    <span>🔒 익명 처리</span>
+                    <div class="dot"></div>
+                    <span>9개 문항</span>
+                </div>
+            </div>
+
+            <!-- 기본 정보 -->
+            <div class="section-block">
+                <div class="section-label">기본 정보</div>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-card-label">포지션</div>
+                        <div class="options-grid" id="q-position">
+                            <div class="option"
+                                onclick="selectRadio(this,'position'); showOther('position-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">개발자</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'position'); showOther('position-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">사업개발</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'position'); showOther('position-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">창업자 / 대표</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'position'); showOther('position-other',true)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">기타</div>
+                            </div>
+                        </div>
+                        <div class="other-input-wrap" id="position-other">
+                            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="position-other-text" />
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-label">회사 유형</div>
+                        <div class="options-grid" id="q-companyType">
+                            <div class="option"
+                                onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">휴머노이드</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">협동로봇 / 로봇 암</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">이동 로봇 (AMR·AGV)</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">서비스 로봇</div>
+                            </div>
+                            <div class="option"
+                                onclick="selectRadio(this,'companyType'); showOther('companyType-other',true)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">기타</div>
+                            </div>
+                        </div>
+                        <div class="other-input-wrap" id="companyType-other">
+                            <input class="other-input" type="text" placeholder="직접 입력해주세요"
+                                id="companyType-other-text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션 1 — 데이터 수집 현황 -->
+            <div class="section-block">
+                <div class="section-label">섹션 1 — 데이터 수집 현황</div>
+
+                <div class="q-block" id="qb1">
+                    <div class="q-label">Q1</div>
+                    <div class="q-text">현재 로봇 학습에 사용하는 데이터는 어떻게 수집하고 있나요?</div>
+                    <div class="q-hint">복수 선택 가능</div>
+                    <div class="options-grid" id="q1">
+                        <div class="option" onclick="toggleCheck(this,'q1')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">자체 수집 (직접 시연·녹화)</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q1')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">텔레오퍼레이션으로 수집</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q1')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">외부 데이터셋 활용 (오픈소스 등)</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q1')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">데이터 전문 업체에서 구매</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q1')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">아직 데이터 수집 단계가 아니다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q1'); toggleOther('q1-other',this)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">기타</div>
+                        </div>
+                    </div>
+                    <div class="other-input-wrap" id="q1-other">
+                        <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q1-other-text" />
+                    </div>
+                </div>
+
+                <div class="q-block" id="qb2">
+                    <div class="q-label">Q2</div>
+                    <div class="q-text">현재 데이터 수집 방식에서 가장 불편하거나 부족한 점은 무엇인가요?</div>
+                    <div class="q-hint">복수 선택 가능</div>
+                    <div class="options-grid" id="q2">
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">수집 비용이 너무 많이 든다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">수집에 시간이 너무 오래 걸린다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">데이터 양이 절대적으로 부족하다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">다양한 환경·조건의 데이터가 없다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">데이터 품질 (라벨링·정확도)이 낮다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">실제 작업 환경 데이터를 구하기 어렵다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">불편한 점이 없다</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q2'); toggleOther('q2-other',this)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">기타</div>
+                        </div>
+                    </div>
+                    <div class="other-input-wrap" id="q2-other">
+                        <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q2-other-text" />
+                    </div>
+                </div>
+
+                <div class="q-block" id="qb3">
+                    <div class="q-label">Q3</div>
+                    <div class="q-text">데이터 부족이 개발 일정이나 성능에 실제로 영향을 준 경험이 있나요?</div>
+                    <div class="options-grid" id="q3">
+                        <div class="option" onclick="selectRadio(this,'q3')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">자주 있다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q3')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">가끔 있다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q3')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">거의 없다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q3')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">해당 없다 (데이터 수집 단계가 아님)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션 2 — 데이터 필요성 -->
+            <div class="section-block">
+                <div class="section-label">섹션 2 — 데이터 필요성</div>
+
+                <div class="q-block" id="qb4">
+                    <div class="q-label">Q4</div>
+                    <div class="q-text">현재 가장 필요한 데이터 유형은 무엇인가요?</div>
+                    <div class="q-hint">최대 2개 선택</div>
+                    <div class="options-grid" id="q4">
+                        <div class="option" onclick="toggleCheck(this,'q4',2)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">작업 객체의 3D 위치·궤적 데이터</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q4',2)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">로봇 관절값·모션 데이터</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q4',2)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">멀티뷰 RGB 영상 데이터</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q4',2)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">실제 공장·매장 환경 데이터</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q4',2)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">시뮬레이션 합성 데이터</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q4',2); toggleOther('q4-other',this)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">기타</div>
+                        </div>
+                    </div>
+                    <div class="other-input-wrap" id="q4-other">
+                        <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q4-other-text" />
+                    </div>
+                </div>
+
+                <div class="q-block" id="qb5">
+                    <div class="q-label">Q5</div>
+                    <div class="q-text">외부에서 데이터를 구매하거나 협력할 때 가장 중요하게 보는 기준은?</div>
+                    <div class="q-hint">복수 선택 가능</div>
+                    <div class="options-grid" id="q5">
+                        <div class="option" onclick="toggleCheck(this,'q5')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">데이터 품질·정확도</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q5')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">데이터 다양성 (환경·조건)</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q5')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">가격</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q5')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">라이선스·데이터 소유권</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q5')">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">납기·공급 속도</div>
+                        </div>
+                        <div class="option" onclick="toggleCheck(this,'q5'); toggleOther('q5-other',this)">
+                            <div class="option-check">✓</div>
+                            <div class="option-text">기타</div>
+                        </div>
+                    </div>
+                    <div class="other-input-wrap" id="q5-other">
+                        <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q5-other-text" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션 3 — 구매 의향 -->
+            <div class="section-block">
+                <div class="section-label">섹션 3 — 구매 의향</div>
+
+                <div class="q-block" id="qb6">
+                    <div class="q-label">Q6</div>
+                    <div class="q-text">필요한 데이터를 외부에서 유료로 구매할 의향이 있나요?</div>
+                    <div class="options-grid" id="q6">
+                        <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',false)">
+                            <div class="option-radio"></div>
+                            <div class="option-text">지금 당장 구매할 의향이 있다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',false)">
+                            <div class="option-radio"></div>
+                            <div class="option-text">조건이 맞으면 구매할 의향이 있다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',false)">
+                            <div class="option-radio"></div>
+                            <div class="option-text">현재는 없지만 미래에는 고려할 수 있다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',true)">
+                            <div class="option-radio"></div>
+                            <div class="option-text">의향이 없다</div>
+                        </div>
+                    </div>
+
+                    <div class="conditional" id="cond-q6">
+                        <div class="q-label">Q6-1 — 추가 질문</div>
+                        <div class="q-text" style="font-size:14px; margin-bottom:12px;">구매 의향이 없는 이유는?</div>
+                        <div class="options-grid" id="q6-1">
+                            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">자체 수집이 더 효율적이다</div>
+                            </div>
+                            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">예산이 없다</div>
+                            </div>
+                            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">외부 데이터를 신뢰하기 어렵다</div>
+                            </div>
+                            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',true)">
+                                <div class="option-radio"></div>
+                                <div class="option-text">기타</div>
+                            </div>
+                        </div>
+                        <div class="other-input-wrap" id="q6_1-other">
+                            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q6_1-other-text" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q-block" id="qb7">
+                    <div class="q-label">Q7</div>
+                    <div class="q-text">데이터 구매 시 어떤 방식을 선호하나요?</div>
+                    <div class="options-grid" id="q7">
+                        <div class="option" onclick="selectRadio(this,'q7')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">건별 구매 (필요한 데이터셋만 단건 구매)</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q7')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">구독형 (월정액으로 지속 공급)</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q7')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">프로젝트 단위 커스텀 수집 의뢰</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q7')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">아직 모르겠다</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q-block" id="qb8">
+                    <div class="q-label">Q8</div>
+                    <div class="q-text">데이터셋 1개 기준 (특정 작업, 멀티뷰, 1,000건 이상)으로 적정하다고 생각하는 가격은?</div>
+                    <div class="options-grid" id="q8">
+                        <div class="option" onclick="selectRadio(this,'q8')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">100만원 이하</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q8')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">100 ~ 500만원</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q8')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">500만원 ~ 1,000만원</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q8')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">1,000만원 이상</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'q8')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">가격보다 품질·조건이 맞으면 협의 가능</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션 4 — 마무리 -->
+            <div class="section-block">
+                <div class="section-label">섹션 4 — 마무리</div>
+
+                <div class="q-block" id="qb9">
+                    <div class="q-label">Q9</div>
+                    <div class="q-text">데이터 외에 로봇 개발에서 현재 가장 해결하고 싶은 병목은 무엇인가요?</div>
+                    <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="q9"
+                        oninput="updateProgress()"></textarea>
+                </div>
+            </div>
+
+            <!-- 상담 패널 (버튼 클릭 시 열림) -->
+            <div class="consult-panel" id="consult-panel">
+                <div class="consult-inner">
+                    <div class="q-label">상담 신청</div>
+                    <div class="q-text">관심 있으신 분의 연락처를 남겨주시면 Dream Robotics 팀이 직접 연락드립니다.</div>
+                    <div class="consult-fields" id="consult-fields">
+                        <input class="consult-input" type="text" placeholder="이름" id="c-name" />
+                        <input class="consult-input" type="text" placeholder="연락처 (전화번호 또는 이메일)" id="c-contact" />
+                        <textarea class="consult-input textarea" placeholder="문의 내용 (선택)" id="c-memo"></textarea>
+                    </div>
+                    <div class="consult-submit-row" id="consult-submit-row">
+                        <button class="submit-btn" onclick="submitConsult()" id="consult-submit-btn">상담 신청하기 →</button>
+                    </div>
+                    <div class="consult-success" id="consult-success">
+                        <div class="consult-success-msg">✓ 신청 완료! 빠른 시일 내에 연락드릴게요.</div>
+                        <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn">Dream
+                            Robotics 홈페이지 방문하기 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <div class="submit-btns">
+                    <button class="consult-btn" id="consult-toggle-btn" onclick="toggleConsult()">상담하기</button>
+                    <button class="submit-btn" onclick="submitForm()">응답 제출하기 →</button>
+                </div>
+                <div class="submit-note">응답은 암호화되어 안전하게 전송됩니다</div>
+            </div>
         </div>
-        <div class="info-card">
-          <div class="info-card-label">회사 유형</div>
-          <div class="options-grid" id="q-companyType">
-            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">휴머노이드</div></div>
-            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">협동로봇 / 로봇 암</div></div>
-            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">이동 로봇 (AMR·AGV)</div></div>
-            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)"><div class="option-radio"></div><div class="option-text">서비스 로봇</div></div>
-            <div class="option" onclick="selectRadio(this,'companyType'); showOther('companyType-other',true)"><div class="option-radio"></div><div class="option-text">기타</div></div>
-          </div>
-          <div class="other-input-wrap" id="companyType-other">
-            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="companyType-other-text" />
-          </div>
+
+        <!-- 감사 화면 -->
+        <div class="thank-you" id="thank-you">
+            <div class="ty-icon">✓</div>
+            <div class="ty-title">소중한 응답 감사합니다</div>
+            <div class="ty-desc">응답 내용은 로봇 데이터 솔루션 개발에 소중하게 활용하겠습니다.<br><br>MOAI LAB은 더 나은 로봇 개발 환경을 만들기 위해 노력합니다.</div>
+            <div class="ty-actions">
+                <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn">Dream Robotics
+                    홈페이지 방문하기 →</a>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- 섹션 1 — 데이터 수집 현황 -->
-    <div class="section-block">
-      <div class="section-label">섹션 1 — 데이터 수집 현황</div>
+    <script>
+        const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyR5fAlPsXQU6XBkPsNbfKS1ivDw9MEplYdKQ-zel9jQ2wqvyk8c7-gFGvw440FB9FD/exec"
+        //"https://script.google.com/macros/s/AKfycbw7BlIfH8I4wmM50OSq0a1TSPJA84CkhFge_kUh2uXXOAeJt-CK9kUQ4chDqu4XxmY5SQ/exec";
 
-      <div class="q-block" id="qb1">
-        <div class="q-label">Q1</div>
-        <div class="q-text">현재 로봇 학습에 사용하는 데이터는 어떻게 수집하고 있나요?</div>
-        <div class="q-hint">복수 선택 가능</div>
-        <div class="options-grid" id="q1">
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">자체 수집 (직접 시연·녹화)</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">텔레오퍼레이션으로 수집</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">외부 데이터셋 활용 (오픈소스 등)</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">데이터 전문 업체에서 구매</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1')"><div class="option-check">✓</div><div class="option-text">아직 데이터 수집 단계가 아니다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q1'); toggleOther('q1-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
-        </div>
-        <div class="other-input-wrap" id="q1-other">
-          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q1-other-text" />
-        </div>
-      </div>
+        const radioState = {};
+        const checkState = {};
+        let selectedRole = null;
 
-      <div class="q-block" id="qb2">
-        <div class="q-label">Q2</div>
-        <div class="q-text">현재 데이터 수집 방식에서 가장 불편하거나 부족한 점은 무엇인가요?</div>
-        <div class="q-hint">복수 선택 가능</div>
-        <div class="options-grid" id="q2">
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">수집 비용이 너무 많이 든다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">수집에 시간이 너무 오래 걸린다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">데이터 양이 절대적으로 부족하다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">다양한 환경·조건의 데이터가 없다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">데이터 품질 (라벨링·정확도)이 낮다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">실제 작업 환경 데이터를 구하기 어렵다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2')"><div class="option-check">✓</div><div class="option-text">불편한 점이 없다</div></div>
-          <div class="option" onclick="toggleCheck(this,'q2'); toggleOther('q2-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
-        </div>
-        <div class="other-input-wrap" id="q2-other">
-          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q2-other-text" />
-        </div>
-      </div>
+        function startSurvey(role) {
+            selectedRole = role;
+            document.getElementById('role-screen').style.display = 'none';
+            document.getElementById('form-content').style.display = 'block';
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-      <div class="q-block" id="qb3">
-        <div class="q-label">Q3</div>
-        <div class="q-text">데이터 부족이 개발 일정이나 성능에 실제로 영향을 준 경험이 있나요?</div>
-        <div class="options-grid" id="q3">
-          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">자주 있다</div></div>
-          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">가끔 있다</div></div>
-          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">거의 없다</div></div>
-          <div class="option" onclick="selectRadio(this,'q3')"><div class="option-radio"></div><div class="option-text">해당 없다 (데이터 수집 단계가 아님)</div></div>
-        </div>
-      </div>
-    </div>
+        function backToRole() {
+            selectedRole = null;
+            document.getElementById('role-screen').style.display = 'block';
+            document.getElementById('form-content').style.display = 'none';
+            document.getElementById('prog-label').textContent = '0 / 11';
+            document.getElementById('prog-fill').style.width = '0%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-    <!-- 섹션 2 — 데이터 필요성 -->
-    <div class="section-block">
-      <div class="section-label">섹션 2 — 데이터 필요성</div>
+        function selectRadio(el, group) {
+            const container = el.closest('.options-grid, .info-card');
+            if (!container) return;
+            container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            radioState[group] = el.querySelector('.option-text').textContent;
+            updateProgress();
+        }
 
-      <div class="q-block" id="qb4">
-        <div class="q-label">Q4</div>
-        <div class="q-text">현재 가장 필요한 데이터 유형은 무엇인가요?</div>
-        <div class="q-hint">최대 2개 선택</div>
-        <div class="options-grid" id="q4">
-          <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">작업 객체의 3D 위치·궤적 데이터</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">로봇 관절값·모션 데이터</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">멀티뷰 RGB 영상 데이터</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">실제 공장·매장 환경 데이터</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4',2)"><div class="option-check">✓</div><div class="option-text">시뮬레이션 합성 데이터</div></div>
-          <div class="option" onclick="toggleCheck(this,'q4',2); toggleOther('q4-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
-        </div>
-        <div class="other-input-wrap" id="q4-other">
-          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q4-other-text" />
-        </div>
-      </div>
+        function toggleCheck(el, group, max) {
+            const container = el.closest('.options-grid');
+            const selected = container.querySelectorAll('.option.selected');
+            if (!el.classList.contains('selected') && max && selected.length >= max) return;
+            el.classList.toggle('selected');
+            if (!checkState[group]) checkState[group] = [];
+            const text = el.querySelector('.option-text').textContent;
+            const idx = checkState[group].indexOf(text);
+            if (idx > -1) checkState[group].splice(idx, 1);
+            else checkState[group].push(text);
+            updateProgress();
+        }
 
-      <div class="q-block" id="qb5">
-        <div class="q-label">Q5</div>
-        <div class="q-text">외부에서 데이터를 구매하거나 협력할 때 가장 중요하게 보는 기준은?</div>
-        <div class="q-hint">복수 선택 가능</div>
-        <div class="options-grid" id="q5">
-          <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">데이터 품질·정확도</div></div>
-          <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">데이터 다양성 (환경·조건)</div></div>
-          <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">가격</div></div>
-          <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">라이선스·데이터 소유권</div></div>
-          <div class="option" onclick="toggleCheck(this,'q5')"><div class="option-check">✓</div><div class="option-text">납기·공급 속도</div></div>
-          <div class="option" onclick="toggleCheck(this,'q5'); toggleOther('q5-other',this)"><div class="option-check">✓</div><div class="option-text">기타</div></div>
-        </div>
-        <div class="other-input-wrap" id="q5-other">
-          <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q5-other-text" />
-        </div>
-      </div>
-    </div>
+        function showCond(id, show) {
+            const el = document.getElementById(id);
+            if (show) el.classList.add('show');
+            else el.classList.remove('show');
+        }
 
-    <!-- 섹션 3 — 구매 의향 -->
-    <div class="section-block">
-      <div class="section-label">섹션 3 — 구매 의향</div>
+        function toggleOther(wrapId, el) {
+            const wrap = document.getElementById(wrapId);
+            if (!wrap) return;
+            if (el.classList.contains('selected')) wrap.classList.add('show');
+            else wrap.classList.remove('show');
+        }
 
-      <div class="q-block" id="qb6">
-        <div class="q-label">Q6</div>
-        <div class="q-text">필요한 데이터를 외부에서 유료로 구매할 의향이 있나요?</div>
-        <div class="options-grid" id="q6">
-          <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',false)"><div class="option-radio"></div><div class="option-text">지금 당장 구매할 의향이 있다</div></div>
-          <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',false)"><div class="option-radio"></div><div class="option-text">조건이 맞으면 구매할 의향이 있다</div></div>
-          <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',false)"><div class="option-radio"></div><div class="option-text">현재는 없지만 미래에는 고려할 수 있다</div></div>
-          <div class="option" onclick="selectRadio(this,'q6'); showCond('cond-q6',true)"><div class="option-radio"></div><div class="option-text">의향이 없다</div></div>
-        </div>
+        function showOther(wrapId, show) {
+            const wrap = document.getElementById(wrapId);
+            if (!wrap) return;
+            if (show) wrap.classList.add('show');
+            else wrap.classList.remove('show');
+        }
 
-        <div class="conditional" id="cond-q6">
-          <div class="q-label">Q6-1 — 추가 질문</div>
-          <div class="q-text" style="font-size:14px; margin-bottom:12px;">구매 의향이 없는 이유는?</div>
-          <div class="options-grid" id="q6-1">
-            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)"><div class="option-radio"></div><div class="option-text">자체 수집이 더 효율적이다</div></div>
-            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)"><div class="option-radio"></div><div class="option-text">예산이 없다</div></div>
-            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',false)"><div class="option-radio"></div><div class="option-text">외부 데이터를 신뢰하기 어렵다</div></div>
-            <div class="option" onclick="selectRadio(this,'q6_1'); showOther('q6_1-other',true)"><div class="option-radio"></div><div class="option-text">기타</div></div>
-          </div>
-          <div class="other-input-wrap" id="q6_1-other">
-            <input class="other-input" type="text" placeholder="직접 입력해주세요" id="q6_1-other-text" />
-          </div>
-        </div>
-      </div>
+        function countAnswered() {
+            let count = 0;
+            ['position', 'companyType', 'q3', 'q6', 'q7', 'q8'].forEach(g => {
+                if (radioState[g]) count++;
+            });
+            ['q1', 'q2', 'q4', 'q5'].forEach(g => {
+                if (checkState[g] && checkState[g].length > 0) count++;
+            });
+            if (document.getElementById('q9').value.trim()) count++;
+            return count;
+        }
 
-      <div class="q-block" id="qb7">
-        <div class="q-label">Q7</div>
-        <div class="q-text">데이터 구매 시 어떤 방식을 선호하나요?</div>
-        <div class="options-grid" id="q7">
-          <div class="option" onclick="selectRadio(this,'q7')"><div class="option-radio"></div><div class="option-text">건별 구매 (필요한 데이터셋만 단건 구매)</div></div>
-          <div class="option" onclick="selectRadio(this,'q7')"><div class="option-radio"></div><div class="option-text">구독형 (월정액으로 지속 공급)</div></div>
-          <div class="option" onclick="selectRadio(this,'q7')"><div class="option-radio"></div><div class="option-text">프로젝트 단위 커스텀 수집 의뢰</div></div>
-          <div class="option" onclick="selectRadio(this,'q7')"><div class="option-radio"></div><div class="option-text">아직 모르겠다</div></div>
-        </div>
-      </div>
+        function updateProgress() {
+            const total = 11;
+            const done = countAnswered();
+            document.getElementById('prog-label').textContent = done + ' / ' + total;
+            document.getElementById('prog-fill').style.width = Math.round(done / total * 100) + '%';
+            document.querySelectorAll('.q-block').forEach(b => {
+                if (b.querySelector('.option.selected, textarea')) b.classList.add('active');
+            });
+        }
 
-      <div class="q-block" id="qb8">
-        <div class="q-label">Q8</div>
-        <div class="q-text">데이터셋 1개 기준 (특정 작업, 멀티뷰, 1,000건 이상)으로 적정하다고 생각하는 가격은?</div>
-        <div class="options-grid" id="q8">
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">100만원 이하</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">100 ~ 500만원</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">500만원 ~ 1,000만원</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">1,000만원 이상</div></div>
-          <div class="option" onclick="selectRadio(this,'q8')"><div class="option-radio"></div><div class="option-text">가격보다 품질·조건이 맞으면 협의 가능</div></div>
-        </div>
-      </div>
-    </div>
+        function toggleConsult() {
+            const panel = document.getElementById('consult-panel');
+            const btn = document.getElementById('consult-toggle-btn');
+            const isOpen = panel.classList.toggle('open');
+            btn.classList.toggle('active', isOpen);
+            btn.textContent = isOpen ? '상담 닫기' : '상담하기';
+            if (isOpen) {
+                setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+            }
+        }
 
-    <!-- 섹션 4 — 마무리 -->
-    <div class="section-block">
-      <div class="section-label">섹션 4 — 마무리</div>
+        async function submitConsult() {
+            const name = document.getElementById('c-name').value.trim();
+            const contact = document.getElementById('c-contact').value.trim();
+            if (!name || !contact) {
+                alert('이름과 연락처를 입력해주세요.');
+                return;
+            }
 
-      <div class="q-block" id="qb9">
-        <div class="q-label">Q9</div>
-        <div class="q-text">데이터 외에 로봇 개발에서 현재 가장 해결하고 싶은 병목은 무엇인가요?</div>
-        <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="q9" oninput="updateProgress()"></textarea>
-      </div>
-    </div>
+            const btn = document.getElementById('consult-submit-btn');
+            btn.textContent = '신청 중...';
+            btn.disabled = true;
 
-    <!-- 상담 패널 (버튼 클릭 시 열림) -->
-    <div class="consult-panel" id="consult-panel">
-      <div class="consult-inner">
-        <div class="q-label">상담 신청</div>
-        <div class="q-text">관심 있으신 분의 연락처를 남겨주시면 Dream Robotics 팀이 직접 연락드립니다.</div>
-        <div class="consult-fields" id="consult-fields">
-          <input class="consult-input" type="text" placeholder="이름" id="c-name" />
-          <input class="consult-input" type="text" placeholder="연락처 (전화번호 또는 이메일)" id="c-contact" />
-          <textarea class="consult-input textarea" placeholder="문의 내용 (선택)" id="c-memo"></textarea>
-        </div>
-        <div class="consult-submit-row" id="consult-submit-row">
-          <button class="submit-btn" onclick="submitConsult()" id="consult-submit-btn">상담 신청하기 →</button>
-        </div>
-        <div class="consult-success" id="consult-success">
-          <div class="consult-success-msg">✓ 신청 완료! 빠른 시일 내에 연락드릴게요.</div>
-          <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn">Dream Robotics 홈페이지 방문하기 →</a>
-        </div>
-      </div>
-    </div>
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: JSON.stringify({
+                        consultation: true,
+                        name,
+                        contact,
+                        memo: document.getElementById('c-memo').value,
+                    }),
+                    headers: { "Content-Type": "text/plain" }
+                });
+            } catch (e) {
+                console.error('전송 오류:', e);
+            }
 
-    <div class="submit-section">
-      <div class="submit-btns">
-        <button class="consult-btn" id="consult-toggle-btn" onclick="toggleConsult()">상담하기</button>
-        <button class="submit-btn" onclick="submitForm()">응답 제출하기 →</button>
-      </div>
-      <div class="submit-note">응답은 암호화되어 안전하게 전송됩니다</div>
-    </div>
-  </div>
+            document.getElementById('consult-fields').style.display = 'none';
+            document.getElementById('consult-submit-row').style.display = 'none';
+            document.getElementById('consult-success').classList.add('show');
+            document.getElementById('consult-toggle-btn').style.display = 'none';
+        }
 
-  <!-- 감사 화면 -->
-  <div class="thank-you" id="thank-you">
-    <div class="ty-icon">✓</div>
-    <div class="ty-title">소중한 응답 감사합니다</div>
-    <div class="ty-desc">응답 내용은 로봇 데이터 솔루션 개발에 소중하게 활용하겠습니다.<br><br>MOAI LAB은 더 나은 로봇 개발 환경을 만들기 위해 노력합니다.</div>
-    <div class="ty-actions">
-      <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn">Dream Robotics 홈페이지 방문하기 →</a>
-    </div>
-  </div>
-</div>
+        async function submitForm() {
+            const btn = document.querySelector('.submit-section .submit-btn');
+            btn.textContent = '제출 중...';
+            btn.disabled = true;
 
-<script>
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyR5fAlPsXQU6XBkPsNbfKS1ivDw9MEplYdKQ-zel9jQ2wqvyk8c7-gFGvw440FB9FD/exec"
-//"https://script.google.com/macros/s/AKfycbw7BlIfH8I4wmM50OSq0a1TSPJA84CkhFge_kUh2uXXOAeJt-CK9kUQ4chDqu4XxmY5SQ/exec";
+            const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
+            const payload = {
+                role: selectedRole || "",
+                position: radioState['position'] || "",
+                position_other: g('position-other-text'),
+                companyType: radioState['companyType'] || "",
+                companyType_other: g('companyType-other-text'),
+                q1: checkState['q1'] || [],
+                q1_other: g('q1-other-text'),
+                q2: checkState['q2'] || [],
+                q2_other: g('q2-other-text'),
+                q3: radioState['q3'] || "",
+                q4: checkState['q4'] || [],
+                q4_other: g('q4-other-text'),
+                q5: checkState['q5'] || [],
+                q5_other: g('q5-other-text'),
+                q6: radioState['q6'] || "",
+                q6_1: radioState['q6_1'] || "",
+                q6_1_other: g('q6_1-other-text'),
+                q7: radioState['q7'] || "",
+                q8: radioState['q8'] || "",
+                q9: document.getElementById('q9').value,
+            };
 
-const radioState = {};
-const checkState = {};
+            try {
+                await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    body: JSON.stringify(payload),
+                    headers: { "Content-Type": "text/plain" }
+                });
+            } catch (e) {
+                console.error('전송 오류:', e);
+            }
 
-function selectRadio(el, group) {
-  const container = el.closest('.options-grid, .info-card');
-  if (!container) return;
-  container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  radioState[group] = el.querySelector('.option-text').textContent;
-  updateProgress();
-}
+            document.getElementById('form-content').classList.add('hidden');
+            document.getElementById('thank-you').classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-function toggleCheck(el, group, max) {
-  const container = el.closest('.options-grid');
-  const selected = container.querySelectorAll('.option.selected');
-  if (!el.classList.contains('selected') && max && selected.length >= max) return;
-  el.classList.toggle('selected');
-  if (!checkState[group]) checkState[group] = [];
-  const text = el.querySelector('.option-text').textContent;
-  const idx = checkState[group].indexOf(text);
-  if (idx > -1) checkState[group].splice(idx, 1);
-  else checkState[group].push(text);
-  updateProgress();
-}
-
-function showCond(id, show) {
-  const el = document.getElementById(id);
-  if (show) el.classList.add('show');
-  else el.classList.remove('show');
-}
-
-function toggleOther(wrapId, el) {
-  const wrap = document.getElementById(wrapId);
-  if (!wrap) return;
-  if (el.classList.contains('selected')) wrap.classList.add('show');
-  else wrap.classList.remove('show');
-}
-
-function showOther(wrapId, show) {
-  const wrap = document.getElementById(wrapId);
-  if (!wrap) return;
-  if (show) wrap.classList.add('show');
-  else wrap.classList.remove('show');
-}
-
-function countAnswered() {
-  let count = 0;
-  ['position', 'companyType', 'q3', 'q6', 'q7', 'q8'].forEach(g => {
-    if (radioState[g]) count++;
-  });
-  ['q1', 'q2', 'q4', 'q5'].forEach(g => {
-    if (checkState[g] && checkState[g].length > 0) count++;
-  });
-  if (document.getElementById('q9').value.trim()) count++;
-  return count;
-}
-
-function updateProgress() {
-  const total = 11;
-  const done = countAnswered();
-  document.getElementById('prog-label').textContent = done + ' / ' + total;
-  document.getElementById('prog-fill').style.width = Math.round(done / total * 100) + '%';
-  document.querySelectorAll('.q-block').forEach(b => {
-    if (b.querySelector('.option.selected, textarea')) b.classList.add('active');
-  });
-}
-
-function toggleConsult() {
-  const panel = document.getElementById('consult-panel');
-  const btn = document.getElementById('consult-toggle-btn');
-  const isOpen = panel.classList.toggle('open');
-  btn.classList.toggle('active', isOpen);
-  btn.textContent = isOpen ? '상담 닫기' : '상담하기';
-  if (isOpen) {
-    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
-  }
-}
-
-async function submitConsult() {
-  const name = document.getElementById('c-name').value.trim();
-  const contact = document.getElementById('c-contact').value.trim();
-  if (!name || !contact) {
-    alert('이름과 연락처를 입력해주세요.');
-    return;
-  }
-
-  const btn = document.getElementById('consult-submit-btn');
-  btn.textContent = '신청 중...';
-  btn.disabled = true;
-
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({
-        consultation: true,
-        name,
-        contact,
-        memo: document.getElementById('c-memo').value,
-      }),
-      headers: { "Content-Type": "text/plain" }
-    });
-  } catch(e) {
-    console.error('전송 오류:', e);
-  }
-
-  document.getElementById('consult-fields').style.display = 'none';
-  document.getElementById('consult-submit-row').style.display = 'none';
-  document.getElementById('consult-success').classList.add('show');
-  document.getElementById('consult-toggle-btn').style.display = 'none';
-}
-
-async function submitForm() {
-  const btn = document.querySelector('.submit-section .submit-btn');
-  btn.textContent = '제출 중...';
-  btn.disabled = true;
-
-  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
-  const payload = {
-    position:          radioState['position']    || "",
-    position_other:    g('position-other-text'),
-    companyType:       radioState['companyType'] || "",
-    companyType_other: g('companyType-other-text'),
-    q1:                checkState['q1']          || [],
-    q1_other:          g('q1-other-text'),
-    q2:                checkState['q2']          || [],
-    q2_other:          g('q2-other-text'),
-    q3:                radioState['q3']          || "",
-    q4:                checkState['q4']          || [],
-    q4_other:          g('q4-other-text'),
-    q5:                checkState['q5']          || [],
-    q5_other:          g('q5-other-text'),
-    q6:                radioState['q6']          || "",
-    q6_1:              radioState['q6_1']        || "",
-    q6_1_other:        g('q6_1-other-text'),
-    q7:                radioState['q7']          || "",
-    q8:                radioState['q8']          || "",
-    q9:                document.getElementById('q9').value,
-  };
-
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(payload),
-      headers: { "Content-Type": "text/plain" }
-    });
-  } catch(e) {
-    console.error('전송 오류:', e);
-  }
-
-  document.getElementById('form-content').classList.add('hidden');
-  document.getElementById('thank-you').classList.add('show');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-updateProgress();
-</script>
+        updateProgress();
+    </script>
 </body>
+
 </html>
