@@ -56,6 +56,7 @@ function doPost(e) {
       "W_걱정사항":       arr(data.w_concerns),
       "W_걱정사항_기타":  t(data.w_concerns_other),
       "W_자유응답":       t(data.w_free_text),
+      "커피쿠폰_이메일":  t(data.coupon_email),
     };
   } else {
     properties = {
@@ -70,6 +71,7 @@ function doPost(e) {
       "M_도입장벽":       arr(data.m_barriers),
       "M_도입장벽_기타":  t(data.m_barriers_other),
       "M_도입기준":       t(data.m_criteria),
+      "커피쿠폰_이메일":  t(data.coupon_email),
     };
   }
 

@@ -50,6 +50,7 @@ function doPost(e) {
       "Q7_구매방식":        t(data.q7),
       "Q8_적정가격":        t(data.q8),
       "Q9_개발병목":        t(data.q9),
+      "커피쿠폰_이메일":    t(data.coupon_email),
     };
   }
 

@@ -154,6 +154,36 @@
             background: var(--text3);
         }
 
+        .coupon-notice {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 18px;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: 99px;
+            font-size: 13px;
+            color: var(--green);
+            letter-spacing: 0.01em;
+        }
+
+        .coupon-email-block {
+            background: var(--bg2);
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            margin-bottom: 20px;
+        }
+
+        .coupon-email-block .q-label {
+            margin-bottom: 6px;
+        }
+
+        .coupon-email-block .q-text {
+            font-size: 14px;
+            color: var(--text2);
+            margin-bottom: 12px;
+        }
+
         /* 배너 이미지 */
         .hero-banner {
             margin-bottom: 40px;
@@ -806,6 +836,9 @@
                         <div class="dot"></div>
                         <span>🔒 익명 처리</span>
                     </div>
+                    <div class="coupon-notice">
+                        🎁 끝까지 인터뷰를 응해주신 분께는 커피쿠폰을 보내드립니다
+                    </div>
                 </div>
 
                 <div class="hero-banner">
@@ -1189,15 +1222,15 @@
                         <div class="options-grid" id="q8">
                             <div class="option" onclick="selectRadio(this,'q8')">
                                 <div class="option-radio"></div>
-                                <div class="option-text">인건비의 25% 이하 (약 50~60만원/월)</div>
+                                <div class="option-text">인건비의 50% 이하 (약 100~120만원/월)</div>
                             </div>
                             <div class="option" onclick="selectRadio(this,'q8')">
                                 <div class="option-radio"></div>
-                                <div class="option-text">인건비의 70% 수준 (약 120~150만원)</div>
+                                <div class="option-text">인건비의 80% 수준 (약 160~200만원/월)</div>
                             </div>
                             <div class="option" onclick="selectRadio(this,'q8')">
                                 <div class="option-radio"></div>
-                                <div class="option-text">인건비와 비슷한 수준 (약 200~250만원)</div>
+                                <div class="option-text">인건비와 비슷한 수준 (약 200~250만원/월)</div>
                             </div>
                             <div class="option" onclick="selectRadio(this,'q8')">
                                 <div class="option-radio"></div>
@@ -1217,6 +1250,12 @@
                         <div class="q-label">Q9</div>
                         <div class="q-text">로봇 도입과 관련해 가장 걱정되는 점, 또는 하고 싶은 말을 자유롭게 적어주세요.</div>
                         <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="q9"
+                            oninput="updateProgress()"></textarea>
+                    </div>
+                    <div class="q-block" id="qb10">
+                        <div class="q-label">Q10</div>
+                        <div class="q-text">현재 매장의 주력 메뉴는 어떤 것인가요?</div>
+                        <textarea class="text-input" placeholder="예) 삼겹살, 아메리카노, 떡볶이 등..." id="q10"
                             oninput="updateProgress()"></textarea>
                     </div>
                 </div>
@@ -1419,6 +1458,12 @@
                         <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="s_q4"
                             oninput="updateProgress()"></textarea>
                     </div>
+                    <div class="q-block">
+                        <div class="q-label">S-Q5</div>
+                        <div class="q-text">현재 매장의 주력 메뉴는 어떤 것인가요?</div>
+                        <textarea class="text-input" placeholder="예) 삼겹살, 아메리카노, 떡볶이 등..." id="s_q5"
+                            oninput="updateProgress()"></textarea>
+                    </div>
                 </div>
 
                 <button class="back-btn" onclick="backToRole()">← 역할 다시 선택</button>
@@ -1446,6 +1491,12 @@
                                 Robotics 홈페이지 방문하기 →</a>
                         </div>
                     </div>
+                </div>
+
+                <div class="coupon-email-block">
+                    <div class="q-label">🎁 커피쿠폰 받기</div>
+                    <div class="q-text">이메일 주소를 남겨주시면 커피쿠폰을 보내드립니다. (선택 사항)</div>
+                    <input class="consult-input" type="email" placeholder="example@email.com" id="coupon-email" />
                 </div>
 
                 <div class="submit-section">
@@ -1587,6 +1638,7 @@
             if (rankCounts['q6'] > 0) c++;
             if (document.getElementById('q5').value.trim()) c++;
             if (document.getElementById('q9').value.trim()) c++;
+            if (document.getElementById('q10').value.trim()) c++;
             return c;
         }
 
@@ -1595,13 +1647,14 @@
             ['s_job', 's_exp', 's_q2', 's_q3'].forEach(g => { if (radioState[g]) c++; });
             if (checkState['s_q1'] && checkState['s_q1'].length) c++;
             if (document.getElementById('s_q4').value.trim()) c++;
+            if (document.getElementById('s_q5').value.trim()) c++;
             return c;
         }
 
         function updateProgress() {
             if (!currentTrack) return;
             const done = currentTrack === 'owner' ? countOwner() : countStaff();
-            const total = currentTrack === 'owner' ? 12 : 6;
+            const total = currentTrack === 'owner' ? 13 : 7;
             document.getElementById('prog-label').textContent = done + ' / ' + total;
             document.getElementById('prog-fill').style.width = Math.round(done / total * 100) + '%';
             document.querySelectorAll('.track.show .q-block').forEach(b => {
@@ -1689,6 +1742,8 @@
                     q7: radioState['q7'] || "",
                     q8: radioState['q8'] || "",
                     q9: document.getElementById('q9').value,
+                    q10: document.getElementById('q10').value,
+                    coupon_email: document.getElementById('coupon-email').value.trim(),
                 };
             } else {
                 payload = {
@@ -1703,6 +1758,8 @@
                     s_q2_tasks_etc: getEtcValue('s_q2_tasks'),
                     s_q3: radioState['s_q3'] || "",
                     s_q4: document.getElementById('s_q4').value,
+                    s_q5: document.getElementById('s_q5').value,
+                    coupon_email: document.getElementById('coupon-email').value.trim(),
                 };
             }
 

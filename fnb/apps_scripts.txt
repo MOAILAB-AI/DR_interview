@@ -47,6 +47,8 @@ function doPost(e) {
       "Q7_도입방식":          t(data.q7),
       "Q8_적정가격":          t(data.q8),
       "Q9_걱정사항":          t(data.q9),
+      "Q10_주력메뉴":         t(data.q10),
+      "커피쿠폰_이메일":      t(data.coupon_email),
     };
   } else {
     properties = {
@@ -62,6 +64,8 @@ function doPost(e) {
       "S_Q2_희망작업_기타":   t(data.s_q2_tasks_etc),
       "S_Q3_로봇도입인식":    t(data.s_q3),
       "S_Q4_자유응답":        t(data.s_q4),
+      "S_Q5_주력메뉴":        t(data.s_q5),
+      "커피쿠폰_이메일":      t(data.coupon_email),
     };
   }
 
