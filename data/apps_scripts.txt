@@ -1,0 +1,78 @@
+const NOTION_TOKEN = "ntn_m40089613124nbWBDnj7s1CHTYCyDdovXlR9ig0JvBI0yx";
+const DATABASE_ID = "3800eef3-e520-801f-8ff4-ff857943b974"
+// "37b0eef3-e520-8084-a38f-c078a6ca72b9";
+//https://app.notion.com/p/3800eef3e520801f8ff4ff857943b974?v=3800eef3e52080f8b79d000ccdd9537c
+
+function doPost(e) {
+  if (!e || !e.postData) return;
+  const data = JSON.parse(e.postData.contents);
+
+  const t = (v) => ({ rich_text: [{ text: { content: String(v || "") } }] });
+  const arr = (v) => ({ rich_text: [{ text: { content: (v || []).join(", ") } }] });
+
+  const payload = {
+    parent: { database_id: DATABASE_ID },
+    properties: {
+      "응답시간":           { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "역할":               t(data.role),
+      "포지션":             t(data.position),
+      "포지션_기타":        t(data.position_other),
+      "현재개발로봇":       t(data.companyType),
+      "현재개발로봇_기타":  t(data.companyType_other),
+      "Q0-1_데이터필요성":  t(data.pre1_data_need),
+      "Q0-2_현장데이터":    t(data.pre2_field_data),
+      "Q1_데이터현황":      arr(data.q1),
+      "Q1_기타":            t(data.q1_other),
+      "Q2_데이터불편":      arr(data.q2),
+      "Q2_기타":            t(data.q2_other),
+      "Q3_개발영향":        t(data.q3),
+      "Q4_필요데이터":      arr(data.q4),
+      "Q4_기타":            t(data.q4_other),
+      "Q5_구매기준":        arr(data.q5),
+      "Q5_기타":            t(data.q5_other),
+      "Q6_구매의향":        t(data.q6),
+      "Q6_1_미구매이유":    t(data.q6_1),
+      "Q6_1_기타":          t(data.q6_1_other),
+      "Q7_구매방식":        t(data.q7),
+      "Q8_적정가격":        t(data.q8),
+      "Q9_개발병목":        t(data.q9),
+    }
+  };
+
+  UrlFetchApp.fetch("https://api.notion.com/v1/pages", {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "Authorization": "Bearer " + NOTION_TOKEN,
+      "Notion-Version": "2022-06-28"
+    },
+    payload: JSON.stringify(payload)
+  });
+
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "ok" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function testNotion() {
+  const payload = {
+    parent: { database_id: DATABASE_ID },
+    properties: {
+      "응답시간": { title: [{ text: { content: "테스트" } }] },
+      "포지션":   { rich_text: [{ text: { content: "CTO" } }] }
+    }
+  };
+  const response = UrlFetchApp.fetch("https://api.notion.com/v1/pages", {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "Authorization": "Bearer " + NOTION_TOKEN,
+      "Notion-Version": "2022-06-28"
+    },
+    payload: JSON.stringify(payload)
+  });
+  Logger.log(response.getContentText());
+}

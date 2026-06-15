@@ -1,0 +1,91 @@
+const NOTION_TOKEN = "ntn_m40089613124nbWBDnj7s1CHTYCyDdovXlR9ig0JvBI0yx";
+const DATABASE_ID = "37f0eef3-e520-8074-981b-c7fa2671a5df"
+// "37b0eef3-e520-8084-a38f-c078a6ca72b9";
+
+function doPost(e) {
+  if (!e || !e.postData) return;
+  const data = JSON.parse(e.postData.contents);
+
+  const t = (v) => ({ rich_text: [{ text: { content: String(v || "") } }] });
+  const arr = (v) => ({ rich_text: [{ text: { content: (v || []).join(", ") } }] });
+
+  let properties;
+
+  if (data.track === 'owner') {
+    properties = {
+      "응답시간":             { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "트랙":                 t("운영자"),
+      "매장유형":             t(data.type),
+      "매장유형_기타":        t(data.type_etc),
+      "매장규모":             t(data.size),
+      "직원수":               t(data.staff),
+      "Q1_운영어려움":        arr(data.q1),
+      "Q1_기타":              t(data.q1_etc),
+      "Q2_반복작업":          arr(data.q2),
+      "Q2_기타":              t(data.q2_etc),
+      "Q3_자동화고려":        t(data.q3),
+      "Q3a_미고려이유":       arr(data.q3a),
+      "Q3a_기타":             t(data.q3a_etc),
+      "Q3b_망설임이유":       arr(data.q3b),
+      "Q4_맡기고싶은작업":    t(data.q4),
+      "Q4_기타":              t(data.q4_etc),
+      "Q5_맡기기싫은작업":    t(data.q5),
+      "Q6_도입기준순위":      t((data.q6 || []).join(" > ")),
+      "Q7_도입방식":          t(data.q7),
+      "Q8_적정가격":          t(data.q8),
+      "Q9_걱정사항":          t(data.q9),
+    };
+  } else {
+    properties = {
+      "응답시간":             { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "트랙":                 t("직원"),
+      "S_직종":               t(data.s_job),
+      "S_직종_기타":          t(data.s_job_etc),
+      "S_경력":               t(data.s_exp),
+      "S_Q1_힘든작업":        arr(data.s_q1),
+      "S_Q1_기타":            t(data.s_q1_etc),
+      "S_Q2_자동화희망":      t(data.s_q2),
+      "S_Q2_희망작업":        arr(data.s_q2_tasks),
+      "S_Q2_희망작업_기타":   t(data.s_q2_tasks_etc),
+      "S_Q3_로봇도입인식":    t(data.s_q3),
+      "S_Q4_자유응답":        t(data.s_q4),
+    };
+  }
+
+  UrlFetchApp.fetch("https://api.notion.com/v1/pages", {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "Authorization": "Bearer " + NOTION_TOKEN,
+      "Notion-Version": "2022-06-28"
+    },
+    payload: JSON.stringify({ parent: { database_id: DATABASE_ID }, properties })
+  });
+
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "ok" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function testNotion() {
+  const payload = {
+    parent: { database_id: DATABASE_ID },
+    properties: {
+      "응답시간": { title: [{ text: { content: "테스트" } }] },
+      "트랙":     { rich_text: [{ text: { content: "운영자" } }] }
+    }
+  };
+  const response = UrlFetchApp.fetch("https://api.notion.com/v1/pages", {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "Authorization": "Bearer " + NOTION_TOKEN,
+      "Notion-Version": "2022-06-28"
+    },
+    payload: JSON.stringify(payload)
+  });
+  Logger.log(response.getContentText());
+}

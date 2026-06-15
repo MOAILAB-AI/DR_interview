@@ -721,7 +721,7 @@
         <div id="role-screen">
             <div class="hero">
                 <div class="hero-badge">시장 조사 인터뷰 #2</div>
-                <h1>로봇 회사 기술자 대상<br>데이터 구매 의향 조사</h1>
+                <h1>로봇 기술자 대상<br>데이터 구매 의향 조사</h1>
                 <p>로봇 학습 데이터 수집 방식과 외부 데이터 구매 의향에 대한 솔직한 의견을 들려주세요. 응답은 익명으로 처리되며 연구 목적으로만 사용됩니다.</p>
                 <div class="hero-meta">
                     <span>⏱ 약 3분 소요</span>
@@ -793,7 +793,7 @@
                         </div>
                     </div>
                     <div class="info-card">
-                        <div class="info-card-label">회사 유형</div>
+                        <div class="info-card-label">현재 개발하는 로봇은</div>
                         <div class="options-grid" id="q-companyType">
                             <div class="option"
                                 onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)">
@@ -811,11 +811,6 @@
                                 <div class="option-text">이동 로봇 (AMR·AGV)</div>
                             </div>
                             <div class="option"
-                                onclick="selectRadio(this,'companyType'); showOther('companyType-other',false)">
-                                <div class="option-radio"></div>
-                                <div class="option-text">서비스 로봇</div>
-                            </div>
-                            <div class="option"
                                 onclick="selectRadio(this,'companyType'); showOther('companyType-other',true)">
                                 <div class="option-radio"></div>
                                 <div class="option-text">기타</div>
@@ -824,6 +819,57 @@
                         <div class="other-input-wrap" id="companyType-other">
                             <input class="other-input" type="text" placeholder="직접 입력해주세요"
                                 id="companyType-other-text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 데이터 필요성 사전 질문 -->
+            <div class="section-block">
+                <div class="section-label">데이터 필요성</div>
+
+                <div class="q-block" id="qb-pre1">
+                    <div class="q-label">Q0-1</div>
+                    <div class="q-text">로봇 개발에 있어 학습용 데이터의 필요성을 얼마나 체감하고 있나요?</div>
+                    <div class="options-grid" id="q-pre1">
+                        <div class="option" onclick="selectRadio(this,'pre1')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">매우 높다 — 개발의 핵심 병목이다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'pre1')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">높다 — 자주 부족함을 느낀다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'pre1')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">보통 — 때때로 부족하지만 관리 가능하다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'pre1')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">낮다 — 현재 단계에서는 크게 필요하지 않다</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="q-block" id="qb-pre2">
+                    <div class="q-label">Q0-2</div>
+                    <div class="q-text">학습용 데이터 외에, 실제 운용 환경에서 수집한 현장 원본 데이터(운용 로그, 실패 케이스, 환경 센서 데이터 등)도 필요하신가요?</div>
+                    <div class="options-grid" id="q-pre2">
+                        <div class="option" onclick="selectRadio(this,'pre2')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">매우 필요하다 — 학습 데이터만큼 중요하다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'pre2')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">있으면 도움이 된다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'pre2')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">학습 데이터로 충분하다</div>
+                        </div>
+                        <div class="option" onclick="selectRadio(this,'pre2')">
+                            <div class="option-radio"></div>
+                            <div class="option-text">잘 모르겠다</div>
                         </div>
                     </div>
                 </div>
@@ -1120,7 +1166,7 @@
 
                 <div class="q-block" id="qb9">
                     <div class="q-label">Q9</div>
-                    <div class="q-text">데이터 외에 로봇 개발에서 현재 가장 해결하고 싶은 병목은 무엇인가요?</div>
+                    <div class="q-text">데이터를 포함해 로봇 개발에서 현재 가장 해결하고 싶은 병목은 무엇인가요?</div>
                     <textarea class="text-input" placeholder="자유롭게 작성해주세요..." id="q9"
                         oninput="updateProgress()"></textarea>
                 </div>
@@ -1237,7 +1283,7 @@
 
         function countAnswered() {
             let count = 0;
-            ['position', 'companyType', 'q3', 'q6', 'q7', 'q8'].forEach(g => {
+            ['position', 'companyType', 'pre1', 'pre2', 'q3', 'q6', 'q7', 'q8'].forEach(g => {
                 if (radioState[g]) count++;
             });
             ['q1', 'q2', 'q4', 'q5'].forEach(g => {
@@ -1248,7 +1294,7 @@
         }
 
         function updateProgress() {
-            const total = 11;
+            const total = 13;
             const done = countAnswered();
             document.getElementById('prog-label').textContent = done + ' / ' + total;
             document.getElementById('prog-fill').style.width = Math.round(done / total * 100) + '%';
@@ -1314,6 +1360,8 @@
                 position_other: g('position-other-text'),
                 companyType: radioState['companyType'] || "",
                 companyType_other: g('companyType-other-text'),
+                pre1_data_need: radioState['pre1'] || "",
+                pre2_field_data: radioState['pre2'] || "",
                 q1: checkState['q1'] || [],
                 q1_other: g('q1-other-text'),
                 q2: checkState['q2'] || [],

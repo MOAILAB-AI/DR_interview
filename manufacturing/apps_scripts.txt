@@ -1,0 +1,99 @@
+const NOTION_TOKEN = "ntn_m40089613124nbWBDnj7s1CHTYCyDdovXlR9ig0JvBI0yx";
+const DATABASE_ID = "3800eef3-e520-80fc-98e7-e78ab200741e"
+//"37b0eef3-e520-8084-a38f-c078a6ca72b9";
+//https://app.notion.com/p/3800eef3e52080fc98e7e78ab200741e?v=3800eef3e52080f9a01f000c15c331ad
+function doPost(e) {
+  if (!e || !e.postData) return;
+  const data = JSON.parse(e.postData.contents);
+
+  const t = (v) => ({ rich_text: [{ text: { content: String(v || "") } }] });
+  const arr = (v) => ({ rich_text: [{ text: { content: (v || []).join(", ") } }] });
+
+  let properties;
+
+  if (data.track === 'worker') {
+    properties = {
+      "응답시간":         { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "트랙":             t("현장직"),
+      "W_직종":           t(data.w_field),
+      "W_직종_기타":      t(data.w_field_other),
+      "W_경력":           t(data.w_experience),
+      "W_담당작업":       arr(data.w_tasks),
+      "W_담당작업_기타":  t(data.w_tasks_other),
+      "W_주요작업":       t(data.w_main_task),
+      "W_작업시간":       t(data.w_time),
+      "W_작업인원":       t(data.w_people),
+      "W_작업빈도":       t(data.w_frequency),
+      "W_신체부담":       t(data.w_physical),
+      "W_집중도":         t(data.w_focus),
+      "W_중요도":         t(data.w_importance),
+      "W_문제점":         arr(data.w_problems),
+      "W_문제점_기타":    t(data.w_problems_other),
+      "W_현재도구":       t(data.w_current_tool),
+      "W_도구만족도":     t(data.w_tool_sat),
+      "W_자동화희망":     t(data.w_desire),
+      "W_사람만가능":     t(data.w_human_only),
+      "W_사람만가능_이유": t(data.w_human_only_desc),
+      "W_자동화_무엇":    t(data.w_auto_what),
+      "W_자동화_누가":    t(data.w_auto_who),
+      "W_자동화_환경":    t(data.w_auto_env),
+      "W_작업특성":       arr(data.w_task_char),
+      "W_자동화불가":     arr(data.w_not_automated),
+      "W_자동화불가_기타": t(data.w_not_automated_other),
+      "W_걱정사항":       arr(data.w_concerns),
+      "W_걱정사항_기타":  t(data.w_concerns_other),
+      "W_자유응답":       t(data.w_free_text),
+    };
+  } else {
+    properties = {
+      "응답시간":         { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "트랙":             t("관리자"),
+      "M_직종":           t(data.m_field),
+      "M_직종_기타":      t(data.m_field_other),
+      "M_결정권한":       t(data.m_authority),
+      "M_우선작업":       t(data.m_priority_task),
+      "M_인원수":         t(data.m_headcount),
+      "M_인건비":         t(data.m_labor_cost),
+      "M_도입장벽":       arr(data.m_barriers),
+      "M_도입장벽_기타":  t(data.m_barriers_other),
+      "M_도입기준":       t(data.m_criteria),
+    };
+  }
+
+  UrlFetchApp.fetch("https://api.notion.com/v1/pages", {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "Authorization": "Bearer " + NOTION_TOKEN,
+      "Notion-Version": "2022-06-28"
+    },
+    payload: JSON.stringify({ parent: { database_id: DATABASE_ID }, properties })
+  });
+
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "ok" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function testNotion() {
+  const payload = {
+    parent: { database_id: DATABASE_ID },
+    properties: {
+      "응답시간": { title: [{ text: { content: "테스트" } }] },
+      "트랙":     { rich_text: [{ text: { content: "현장직" } }] }
+    }
+  };
+  const response = UrlFetchApp.fetch("https://api.notion.com/v1/pages", {
+    method: "post",
+    contentType: "application/json",
+    headers: {
+      "Authorization": "Bearer " + NOTION_TOKEN,
+      "Notion-Version": "2022-06-28"
+    },
+    payload: JSON.stringify(payload)
+  });
+  Logger.log(response.getContentText());
+}
