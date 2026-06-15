@@ -153,6 +153,31 @@
             background: var(--text3);
         }
 
+        .hero-banner {
+            margin-bottom: 40px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            display: block;
+        }
+
+        .hero-banner-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(14, 14, 16, 0.85) 0%, transparent 100%);
+            padding: 20px 20px 14px;
+            font-size: 12px;
+            color: var(--text2);
+            letter-spacing: 0.04em;
+        }
+
         .section-label {
             font-size: 11px;
             font-weight: 600;
@@ -730,6 +755,10 @@
                     <div class="dot"></div>
                     <span>9개 문항</span>
                 </div>
+            </div>
+            <div class="hero-banner">
+                <img src="fig_data.png" alt="로봇 학습 데이터 수집 자동화" />
+                <div class="hero-banner-caption">Dream Robotics — 다양한 환경의 데이터</div>
             </div>
             <div class="section-label">시작하기 전에 — 본인의 역할을 선택해주세요</div>
             <div class="role-cards">
