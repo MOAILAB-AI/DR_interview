@@ -1458,7 +1458,7 @@
                         </div>
                         <div class="consult-success" id="consult-success">
                             <div class="consult-success-msg">✓ 신청 완료! 빠른 시일 내에 연락드릴게요.</div>
-                            <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn">Dream
+                            <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn" onclick="trackHomepageVisit()">Dream
                                 Robotics 홈페이지 방문하기 →</a>
                         </div>
                     </div>
@@ -1482,7 +1482,7 @@
             <div class="ty-desc">응답 내용은 현장 업무 자동화 솔루션 개발에 소중하게 활용하겠습니다.<br><br>이 설문은 현장 업무 자동화 가능성을 탐색하기 위한 조사이며, 개인 식별
                 정보는 수집하지 않습니다.</div>
             <div class="ty-actions">
-                <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn">Dream Robotics
+                <a href="https://h2kang2021.wixsite.com/my-site" target="_blank" class="homepage-btn" onclick="trackHomepageVisit()">Dream Robotics
                     홈페이지 방문하기 →</a>
             </div>
         </div>
@@ -1615,6 +1615,14 @@
             btn.classList.toggle('active', isOpen);
             btn.textContent = isOpen ? '상담 닫기' : '상담하기';
             if (isOpen) setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+        }
+
+        function trackHomepageVisit() {
+            fetch(WEBHOOK_URL, {
+                method: "POST", mode: "no-cors",
+                body: JSON.stringify({ homepage_visit: true }),
+                headers: { "Content-Type": "text/plain" }
+            }).catch(() => {});
         }
 
         async function submitConsult() {

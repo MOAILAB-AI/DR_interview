@@ -10,9 +10,23 @@ function doPost(e) {
   const t = (v) => ({ rich_text: [{ text: { content: String(v || "") } }] });
   const arr = (v) => ({ rich_text: [{ text: { content: (v || []).join(", ") } }] });
 
-  const payload = {
-    parent: { database_id: DATABASE_ID },
-    properties: {
+  let properties;
+
+  if (data.consultation === true) {
+    properties = {
+      "응답시간":     { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "상담신청":     t("O"),
+      "이름":         t(data.name),
+      "연락처":       t(data.contact),
+      "문의내용":     t(data.memo),
+    };
+  } else if (data.homepage_visit === true) {
+    properties = {
+      "응답시간":     { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "홈페이지방문": t("O"),
+    };
+  } else {
+    properties = {
       "응답시간":           { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
       "역할":               t(data.role),
       "포지션":             t(data.position),
@@ -36,7 +50,12 @@ function doPost(e) {
       "Q7_구매방식":        t(data.q7),
       "Q8_적정가격":        t(data.q8),
       "Q9_개발병목":        t(data.q9),
-    }
+    };
+  }
+
+  const payload = {
+    parent: { database_id: DATABASE_ID },
+    properties,
   };
 
   UrlFetchApp.fetch("https://api.notion.com/v1/pages", {

@@ -11,7 +11,20 @@ function doPost(e) {
 
   let properties;
 
-  if (data.track === 'worker') {
+  if (data.consultation === true) {
+    properties = {
+      "응답시간":   { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "상담신청":   t("O"),
+      "이름":       t(data.name),
+      "연락처":     t(data.contact),
+      "문의내용":   t(data.memo),
+    };
+  } else if (data.homepage_visit === true) {
+    properties = {
+      "응답시간":   { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
+      "홈페이지방문": t("O"),
+    };
+  } else if (data.track === 'worker') {
     properties = {
       "응답시간":         { title: [{ text: { content: new Date().toLocaleString('ko-KR') } }] },
       "트랙":             t("현장직"),
